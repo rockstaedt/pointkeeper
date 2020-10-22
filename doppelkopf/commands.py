@@ -25,4 +25,10 @@ def create_tables():
         name = "Peer"
     )
 
+    db.session.add(eric)
+    db.session.add(lucas)
+    db.session.add(marco)
+    db.session.add(nils)
+    db.session.add(peer)
+
     db.session.commit()
