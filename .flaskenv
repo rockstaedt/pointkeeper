@@ -1,0 +1,3 @@
+FLASK_ENV=development
+FLASK_APP=doppelkopf
+FLASK_DEBUG=1
