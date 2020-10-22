@@ -25,43 +25,4 @@ def create_tables():
         name = "Peer"
     )
 
-    db.session.add(eric)
-    db.session.add(lucas)
-    db.session.add(marco)
-    db.session.add(nils)
-    db.session.add(peer)
-
-    game = Game(played_matches = 10)
-
-    db.session.add(game)
-
-    result_eric = Result(
-        player = eric,
-        game = game,
-        points = 10
-    )
-
-    result_lucas = Result(
-        player = lucas,
-        game = game,
-        points = 12
-    )
-
-    result_nils = Result(
-        player = nils,
-        game = game,
-        points = 14
-    )
-
-    result_peer = Result(
-        player = peer,
-        game = game,
-        points = -20
-    )
-
-    db.session.add(result_eric)
-    db.session.add(result_lucas)
-    db.session.add(result_nils)
-    db.session.add(result_peer)
-
     db.session.commit()
