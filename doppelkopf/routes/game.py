@@ -12,10 +12,10 @@ form_key_to_description = {
     "points_player2": "Punkte Spieler 2",
     "points_player3": "Punkte Spieler 3",
     "points_player4": "Punkte Spieler 4",
-    "select_player1": "Spieler 1 nicht gewählt.",
-    "select_player2": "Spieler 2 nicht gewählt.",
-    "select_player3": "Spieler 3 nicht gewählt.",
-    "select_player4": "Spieler 4 nicht gewählt.",
+    "id_player1": "Spieler 1 nicht gewählt.",
+    "id_player2": "Spieler 2 nicht gewählt.",
+    "id_player3": "Spieler 3 nicht gewählt.",
+    "id_player4": "Spieler 4 nicht gewählt.",
 }
 
 game = Blueprint('game', __name__)
