@@ -12,6 +12,7 @@
     <script src="https://kit.fontawesome.com/5a7b8770d3.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.js" integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
 </head>
 
 <body id="page-top">
@@ -38,7 +39,7 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
-                    <h2>Spiel Liste</h2>
+                    <h2 style="margin-bottom: 50px;">Spiel Liste</h2>
                     <div class="table-responsive">
                         <table class="table" style="color: #cccccc;">
                             <thead>
@@ -89,19 +90,19 @@
     <section id="rangliste" class="content-section text-center" style="background: #232121;">
         <div class="container">
             <div class="col-lg-8 mx-auto">
-                <h1>Ewige Rangliste</h1>
+                <h1 style="margin-bottom: 50px;">Ewige Rangliste</h1>
                 <div class="table-responsive">
                     <table class="table" style="color: #cccccc;">
                         <thead>
                             <tr>
-                                <th style="color: #cccccc;">Rang</th>
-                                <th style="color: #cccccc;">Spieler</th>
-                                <th style="color: #cccccc;">Punkte</th>
-                                <th style="color: #cccccc;">Spiele</th>
-                                <th style="color: #cccccc;">Punkte pro Spiel</th>
+                                <th>Rang</th>
+                                <th>Spieler</th>
+                                <th>Punkte</th>
+                                <th>Spiele</th>
+                                <th>Punkte pro Spiel</th>
                             </tr>
                         </thead>
-                        <tbody style="color: #cccccc;">
+                        <tbody>
                             {% for player in players_ranked %}
                                 <tr>
                                     <td>{{player_statistics[player.id]["ranking"]}}</td>
@@ -113,6 +114,27 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="analyse" class="content-section text-center" style="background: #232121;">
+        <div class="container">
+            <div class="row" style="height: max-content;">
+                <div class="col-lg-8 mx-auto">
+                    <h1 style="margin-bottom: 50px;">Analyse</h1>
+                </div>
+            </div>
+            <div class="row" style="height: max-content;">
+                <div class="col-lg-8 mx-auto">
+                    <h5 style="margin-bottom: 25px;">Platzierung</h5>
+                    <canvas id="rangliste_chart"></canvas>
+                </div>
+            </div>
+            <div class="row" style="height: max-content;">
+                <div class="col-lg-8 mx-auto">
+                    <h5 style="margin-bottom: 25px; margin-top: 100px;">Gesamtpunkte</h5>
+                    <canvas id="punkte_chart"></canvas>
                 </div>
             </div>
         </div>
@@ -224,6 +246,194 @@
 </body>
 
 <script>
+
+    var rangliste_ctx = $('#rangliste_chart')[0].getContext('2d');
+
+    var punkte_ctx = $('#punkte_chart')[0].getContext('2d');
+
+    var datasets_rangliste = [];
+
+    var datasets_punkte = [];
+
+    var eric_img = new Image(40,40);
+    var lucas_img = new Image(40,40);
+    var marco_img = new Image(40,40);
+    var peer_img = new Image(40,40);
+    var nils_img = new Image(40,40);
+    eric_img.src ='static/img/eric.png';
+    lucas_img.src ='static/img/lucas.png';
+    marco_img.src ='static/img/marco.png';
+    peer_img.src ='static/img/peer.png';
+    nils_img.src ='static/img/nils.png';
+
+    var player_to_pic = {
+        'Eric': eric_img,
+        'Lucas': lucas_img,
+        'Nils': nils_img,
+        'Marco': marco_img,
+        'Peer': peer_img
+    };
+
+    Chart.defaults.global.defaultFontColor = '#cccccc'
+
+    Chart.Legend.prototype.afterFit = function() {
+        this.height = this.height + 20;
+    };
+
+    var getData_rangliste = $.get("rangliste_chart");
+
+    getData_rangliste.done(function(data) {
+
+        for (dataset of data.datasets) {
+            datasets_rangliste.push(
+                {
+                    label: dataset.label,
+                    tension: 0,
+                    backgroundColor: "#43DCA3",
+                    borderColor: "#43DCA3",
+                    data: dataset.data,
+                    fill: false,
+                    pointRadius: dataset.pointRadius,
+                    pointHitRadius: dataset.pointHitRadius,
+                    pointStyle: dataset.pointStyle
+                }
+            )
+        };
+
+        for (dataset of datasets_rangliste) {
+            dataset.pointRadius.push(20),
+            dataset.pointHitRadius.push(20),
+            dataset.pointStyle.push(player_to_pic[dataset.label])
+        };
+
+        var chart = new Chart(rangliste_ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: data.labels,
+                datasets: datasets_rangliste,
+            },
+
+            // Configuration options go here
+            options: {
+                legend: {
+                    display: false
+                 },
+                responsive: true,
+                scales: {
+                    yAxes: [
+                        {
+                            ticks : {
+                                reverse : true,
+                                padding: 20,
+                                callback: function(value, index, values) {
+                                    if (Math.floor(value) === value) {
+                                        return Math.round(value);
+                                    };
+                                }
+                            },
+                            max: 5,
+                            min: 1,
+                            stepSize: 1,
+                            gridLines: {
+                                display: true,
+                                color: '#000000',
+                                linewidth: 0.5,
+                                drawBorder: false,
+                            },
+                        }
+                    ],
+                    xAxes: [
+                        {
+                            ticks: {
+                                padding: 20,
+                            },
+                            gridLines: {
+                                display: false,
+                            },
+                        }
+                    ],
+                },
+            }
+        });
+    });
+
+    var getData_punkte = $.get("punkte_chart");
+
+    getData_punkte.done(function(data) {
+
+        for (dataset of data.datasets) {
+            datasets_punkte.push(
+                {
+                    label: dataset.label,
+                    backgroundColor: "#43DCA3",
+                    borderColor: "#43DCA3",
+                    data: dataset.data,
+                    fill: false,
+                    pointRadius: dataset.pointRadius,
+                    pointHitRadius: dataset.pointHitRadius,
+                    pointStyle: dataset.pointStyle
+                }
+            )
+        };
+
+        for (dataset of datasets_punkte) {
+            dataset.pointRadius.push(20),
+            dataset.pointHitRadius.push(20),
+            dataset.pointStyle.push(player_to_pic[dataset.label])
+        };
+
+        var chart = new Chart(punkte_ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: data.labels,
+                datasets: datasets_punkte,
+            },
+
+            // Configuration options go here
+            options: {
+                legend: {
+                    display: false
+                 },
+                responsive: true,
+                scales: {
+                    yAxes: [
+                        {
+                            ticks : {
+                                padding: 20,
+                                stepSize: 5,
+                                callback: function(value, index, values) {
+                                    return Math.round(value);
+                                }
+                            },
+                            gridLines: {
+                                display: true,
+                                color: '#000000',
+                                linewidth: 0.5,
+                                drawBorder: false,
+                            },
+                        }
+                    ],
+                    xAxes: [
+                        {
+                            ticks: {
+                                padding: 20,
+                            },
+                            gridLines: {
+                                display: false,
+                            },
+                        }
+                    ],
+                },
+            }
+        });
+    });
+
     function show_delete_alert(clicked_id)
     {
         event.preventDefault();

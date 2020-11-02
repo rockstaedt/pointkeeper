@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#editor
+# Editor
 .vscode
+
+# Database
+database.sqlite
