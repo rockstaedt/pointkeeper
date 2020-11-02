@@ -37,7 +37,7 @@ def rangliste_chart():
         ).filter(
             Game.date <= game.date
         ).group_by(
-            Result.player_id
+            Player.name
         ).order_by(
             desc("total_points_sum")
         ).all()
@@ -99,7 +99,7 @@ def punkte_chart():
         ).filter(
             Game.date <= game.date
         ).group_by(
-            Result.player_id
+            Player.name
         ).all()
         for result in results:
             datasets_dict[result.name]["data"].append(result.total_points_sum)
