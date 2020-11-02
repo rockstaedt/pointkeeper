@@ -40,7 +40,6 @@ def rangliste_chart():
         ).order_by(
             desc("total_points_sum")
         ).all()
-        print(f"Game ID: {game.id} und {results}")
         ranking = 1
         for result in results:
             datasets_dict[result.name]["data"].append(ranking)
