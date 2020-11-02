@@ -125,16 +125,20 @@
                     <h1 style="margin-bottom: 50px;">Analyse</h1>
                 </div>
             </div>
-            <div class="row" style="height: max-content;">
+            <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <h5 style="margin-bottom: 25px;">Platzierung</h5>
-                    <canvas id="rangliste_chart"></canvas>
+                    <div class="table-responsive">
+                        <canvas id="rangliste_chart" class="table", style="height: 300px;"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="row" style="height: max-content;">
+            <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <h5 style="margin-bottom: 25px; margin-top: 100px;">Gesamtpunkte</h5>
-                    <canvas id="punkte_chart"></canvas>
+                    <div class="table-responsive">
+                        <canvas id="punkte_chart" class="table", style="height: 300px;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -321,7 +325,8 @@
                 legend: {
                     display: false
                  },
-                responsive: true,
+                responsive: false,
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [
                         {
@@ -400,7 +405,8 @@
                 legend: {
                     display: false
                  },
-                responsive: true,
+                responsive: false,
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [
                         {
