@@ -29,7 +29,6 @@ def rangliste_chart():
     for i, game in enumerate(games):
         results = db.session.query(
             Player.name,
-            Game.date,
             func.sum(Result.points).label("total_points_sum")
         ).join(
             Player,
@@ -91,7 +90,6 @@ def punkte_chart():
     for i, game in enumerate(games):
         results = db.session.query(
             Player.name,
-            Game.date,
             func.sum(Result.points).label("total_points_sum")
         ).join(
             Player,
