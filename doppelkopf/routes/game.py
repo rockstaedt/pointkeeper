@@ -30,7 +30,7 @@ def save_game():
                 "danger"
             )
             return redirect("/#spielliste")
-        elif request.form[key] == "-1":
+        elif request.form[key] == "no_player_selected":
             flash("Spiel nicht gespeichert!"
                 + f" {form_key_to_description[key]}",
                 "danger"

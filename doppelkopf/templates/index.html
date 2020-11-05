@@ -179,7 +179,7 @@
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="id_player{{i}}">Spieler {{i}}</label>
                                 <select class="custom-select" id="id_player{{i}}" name="id_player{{i}}">
-                                    <option selected value="-1">Wähle...</option>
+                                    <option selected value="no_player_selected">Wähle...</option>
                                     {% for player in players %}
                                         <option value="{{player.id}}">{{player.name}}</option>
                                     {% endfor %}
