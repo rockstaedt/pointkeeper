@@ -5,14 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Doppelkopf Stammtisch</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.js" integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin:700">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="static/js/script.min.js"></script>
     <script src="https://kit.fontawesome.com/5a7b8770d3.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.js" integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous"></script>
 </head>
 
 <body id="page-top">
@@ -120,7 +128,7 @@
     </section>
     <section id="analyse" class="content-section text-center" style="background: #232121;">
         <div class="container">
-            <div class="row" style="height: max-content;">
+            <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <h1 style="margin-bottom: 50px;">Analyse</h1>
                 </div>
@@ -128,25 +136,17 @@
             <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <h5 style="margin-bottom: 25px;">Platzierung</h5>
-                    <div class="table-responsive">
-                        <canvas id="rangliste_chart" class="table", style="height: 300px;"></canvas>
-                    </div>
+                    <canvas id="rangliste_chart" height="345" width="690" style="max-height: 100%; max-width: 100%;"></canvas>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <h5 style="margin-bottom: 25px; margin-top: 100px;">Gesamtpunkte</h5>
-                    <div class="table-responsive">
-                        <canvas id="punkte_chart" class="table", style="height: 300px;"></canvas>
-                    </div>
+                    <canvas id="punkte_chart" height="345" width="690" style="max-height: 100%; max-width: 100%;"></canvas>
                 </div>
             </div>
         </div>
     </section>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <script src="static/js/script.min.js"></script>
 
 <!-- Modal -->
 <form id="add_game_form" method="POST" action="{{url_for("game.save_game")}}" data-toggle="validator" role="form">
@@ -341,7 +341,6 @@
                             },
                             max: 5,
                             min: 1,
-                            stepSize: 1,
                             gridLines: {
                                 display: true,
                                 color: '#000000',
@@ -361,6 +360,32 @@
                         }
                     ],
                 },
+                plugins: {
+                    zoom: {
+                        // Container for pan options
+                        pan: {
+                            // Boolean to enable panning
+                            enabled: true,
+
+                            // Panning directions. Remove the appropriate direction to disable
+                            // Eg. 'y' would only allow panning in the y direction
+                            mode: 'xy',
+                            speed: 5,
+                            threshold: 5,
+                        },
+
+                        // Container for zoom options
+                        zoom: {
+                            // Boolean to enable zooming
+                            enabled: true,
+
+                            // Zooming directions. Remove the appropriate direction to disable
+                            // Eg. 'y' would only allow zooming in the y direction
+                            mode: 'xy',
+                            speed: 0.05
+                        }
+                    }
+                }
             }
         });
     });
@@ -412,7 +437,6 @@
                         {
                             ticks : {
                                 padding: 20,
-                                stepSize: 5,
                                 callback: function(value, index, values) {
                                     return Math.round(value);
                                 }
@@ -436,6 +460,31 @@
                         }
                     ],
                 },
+                plugins: {
+                    zoom: {
+                        // Container for pan options
+                        pan: {
+                            // Boolean to enable panning
+                            enabled: true,
+
+                            // Panning directions. Remove the appropriate direction to disable
+                            // Eg. 'y' would only allow panning in the y direction
+                            mode: 'xy',
+                            speed: 5
+                        },
+
+                        // Container for zoom options
+                        zoom: {
+                            // Boolean to enable zooming
+                            enabled: true,
+
+                            // Zooming directions. Remove the appropriate direction to disable
+                            // Eg. 'y' would only allow zooming in the y direction
+                            mode: 'xy',
+                            speed: 0.05
+                        }
+                    }
+                }
             }
         });
     });
