@@ -11,8 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin:700">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script src="static/js/script.min.js"></script>
     <script src="https://kit.fontawesome.com/5a7b8770d3.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -20,7 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js" integrity="sha512-qRj8N7fxOHxPkKjnQ9EJgLJ8Ng1OK7seBn1uk8wkqaXpa7OA13LO6txQ7+ajZonyc9Ts4K/ugXljevkFTUGBcw==" crossorigin="anonymous"></script>
 </head>
 
 <body id="page-top">
@@ -259,6 +258,8 @@
 
     var datasets_punkte = [];
 
+    var date_labels_punkte = [];
+
     var eric_img = new Image(40,40);
     var lucas_img = new Image(40,40);
     var marco_img = new Image(40,40);
@@ -369,9 +370,7 @@
 
                             // Panning directions. Remove the appropriate direction to disable
                             // Eg. 'y' would only allow panning in the y direction
-                            mode: 'xy',
-                            speed: 5,
-                            threshold: 5,
+                            mode: 'xy'
                         },
 
                         // Container for zoom options
@@ -399,6 +398,7 @@
                 {
                     label: dataset.label,
                     backgroundColor: "#43DCA3",
+                    tension: 0.2,
                     borderColor: "#43DCA3",
                     data: dataset.data,
                     fill: false,
@@ -469,8 +469,7 @@
 
                             // Panning directions. Remove the appropriate direction to disable
                             // Eg. 'y' would only allow panning in the y direction
-                            mode: 'xy',
-                            speed: 5
+                            mode: 'xy'
                         },
 
                         // Container for zoom options
