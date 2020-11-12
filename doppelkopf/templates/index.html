@@ -15,7 +15,8 @@
     <script src="static/js/script.min.js"></script>
     <script src="https://kit.fontawesome.com/5a7b8770d3.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js" integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
@@ -258,8 +259,6 @@
 
     var datasets_punkte = [];
 
-    var date_labels_punkte = [];
-
     var eric_img = new Image(40,40);
     var lucas_img = new Image(40,40);
     var marco_img = new Image(40,40);
@@ -352,6 +351,14 @@
                     ],
                     xAxes: [
                         {
+                            type: 'time',
+                            distribution: 'series',
+                            time: {
+                                unit: 'day',
+                                displayFormats: {
+                                    day: 'DD.MM.YYYY'
+                                }
+                            },
                             ticks: {
                                 padding: 20,
                             },
@@ -451,6 +458,14 @@
                     ],
                     xAxes: [
                         {
+                            type: 'time',
+                            distribution: 'series',
+                            time: {
+                                unit: 'day',
+                                displayFormats: {
+                                    day: 'DD.MM.YYYY'
+                                }
+                            },
                             ticks: {
                                 padding: 20,
                             },

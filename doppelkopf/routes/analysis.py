@@ -18,7 +18,7 @@ def rangliste_chart():
     games = Game.query.order_by(asc(Game.date), asc(Game.id)).all()
     players = Player.query.all()
     for game in games:
-        result_dict["labels"].append(datetime.strftime(game.date, "%d.%m.%Y"))
+        result_dict["labels"].append(game.date.isoformat())
     for player in players:
         datasets_dict[player.name] = {
             "data": [],
@@ -88,7 +88,7 @@ def punkte_chart():
     # create a list of labels which contains the games dates and store it
     # in a dictionary
     for game in games:
-        result_dict["labels"].append(datetime.strftime(game.date, "%d.%m.%Y"))
+        result_dict["labels"].append(game.date.isoformat())
     for player in players:
         # initiate dictionary for players to get the values for chart js
         datasets_dict[player.name] = {
