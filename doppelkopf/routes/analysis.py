@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from sqlalchemy import desc, func
+from sqlalchemy import desc, asc, func
 from datetime import datetime
 
 
@@ -14,7 +14,8 @@ def rangliste_chart():
     datasets_dict = {}
     result_dict["labels"] = []
     result_dict["datasets"] = []
-    games = Game.query.order_by(Game.date).all()
+    current_total_points = {}
+    games = Game.query.order_by(asc(Game.date), asc(Game.id)).all()
     players = Player.query.all()
     for game in games:
         result_dict["labels"].append(datetime.strftime(game.date, "%d.%m.%Y"))
@@ -26,28 +27,35 @@ def rangliste_chart():
             "pointHitRadius": [],
             "pointStyle": []
         }
+        current_total_points[player.name] = 0
     for i, game in enumerate(games):
         results = db.session.query(
             Player.name,
-            func.sum(Result.points).label("total_points_sum")
+            Game.id,
+            Game.date,
+            Result.points
         ).join(
             Player,
             Game
         ).filter(
-            Game.date <= game.date
-        ).group_by(
-            Player.name
-        ).order_by(
-            desc("total_points_sum")
+            Game.id == game.id
         ).all()
+        # update total points to get ranking
+        for result in  results:
+            current_total_points[result.name] += result.points
+        ranked_players = sorted(
+            current_total_points.items(),
+            key = lambda item: item[1],
+            reverse = True
+        )
         ranking = 1
-        for result in results:
-            datasets_dict[result.name]["data"].append(ranking)
+        for player in ranked_players:
+            datasets_dict[player[0]]["data"].append(ranking)
             ranking += 1
             if i != len(games) - 1:
-                datasets_dict[result.name]["pointRadius"].append(5)
-                datasets_dict[result.name]["pointHitRadius"].append(5)
-                datasets_dict[result.name]["pointStyle"].append("circle")
+                datasets_dict[player[0]]["pointRadius"].append(5)
+                datasets_dict[player[0]]["pointHitRadius"].append(5)
+                datasets_dict[player[0]]["pointStyle"].append("circle")
         if i == 0:
             # In the first game, one player does not have points -> 5th place
             for player in players:
@@ -74,11 +82,14 @@ def punkte_chart():
     datasets_dict = {}
     result_dict["labels"] = []
     result_dict["datasets"] = []
-    games = Game.query.order_by(Game.date).all()
+    games = Game.query.order_by(asc(Game.date), asc(Game.id)).all()
     players = Player.query.all()
+    # create a list of labels which contains the games dates and store it
+    # in a dictionary
     for game in games:
         result_dict["labels"].append(datetime.strftime(game.date, "%d.%m.%Y"))
     for player in players:
+        # initiate dictionary for players to get the values for chart js
         datasets_dict[player.name] = {
             "data": [],
             "pointRadius": [],
@@ -89,17 +100,28 @@ def punkte_chart():
     for i, game in enumerate(games):
         results = db.session.query(
             Player.name,
-            func.sum(Result.points).label("total_points_sum")
+            Game.id,
+            Game.date,
+            Result.points
         ).join(
             Player,
             Game
         ).filter(
-            Game.date <= game.date
-        ).group_by(
-            Player.name
+            Game.id == game.id
         ).all()
         for result in results:
-            datasets_dict[result.name]["data"].append(result.total_points_sum)
+            if i == 0 :
+                 # if it is the first game, set data to the value of points
+                datasets_dict[result.name]["data"].append(
+                    result.points
+                )
+            else:
+                # in any other case, update the points with the previous value
+                datasets_dict[result.name]["data"].append(
+                    datasets_dict[result.name]["data"][-1]
+                    + result.points
+                )
+            # add properties for chart js without picture
             if i != len(games) - 1:
                 datasets_dict[result.name]["pointRadius"].append(5)
                 datasets_dict[result.name]["pointHitRadius"].append(5)
