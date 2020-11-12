@@ -82,6 +82,7 @@ def punkte_chart():
     datasets_dict = {}
     result_dict["labels"] = []
     result_dict["datasets"] = []
+    current_total_points = {}
     games = Game.query.order_by(asc(Game.date), asc(Game.id)).all()
     players = Player.query.all()
     # create a list of labels which contains the games dates and store it
@@ -97,6 +98,7 @@ def punkte_chart():
             "pointHitRadius": [],
             "pointStyle": []
         }
+        current_total_points[player.name] = 0
     for i, game in enumerate(games):
         results = db.session.query(
             Player.name,
@@ -109,31 +111,23 @@ def punkte_chart():
         ).filter(
             Game.id == game.id
         ).all()
-        for result in results:
-            if i == 0 :
-                 # if it is the first game, set data to the value of points
-                datasets_dict[result.name]["data"].append(
-                    result.points
-                )
-            else:
-                # in any other case, update the points with the previous value
-                datasets_dict[result.name]["data"].append(
-                    datasets_dict[result.name]["data"][-1]
-                    + result.points
-                )
+        for result in  results:
+            current_total_points[result.name] += result.points
+        for player, points in current_total_points.items():
+            datasets_dict[player]["data"].append(points)
             # add properties for chart js without picture
             if i != len(games) - 1:
-                datasets_dict[result.name]["pointRadius"].append(5)
-                datasets_dict[result.name]["pointHitRadius"].append(5)
-                datasets_dict[result.name]["pointStyle"].append("circle")
-        if i == 0:
-            # In the first game, one player does not have points -> 0 points
-            for player in players:
-                if len(datasets_dict[player.name]["data"]) == 0:
-                    datasets_dict[player.name]["data"].append(0)
-                    datasets_dict[player.name]["pointRadius"].append(5)
-                    datasets_dict[player.name]["pointHitRadius"].append(5)
-                    datasets_dict[player.name]["pointStyle"].append("circle")
+                datasets_dict[player]["pointRadius"].append(5)
+                datasets_dict[player]["pointHitRadius"].append(5)
+                datasets_dict[player]["pointStyle"].append("circle")
+        # if i == 0:
+        #     # In the first game, one player does not have points -> 0 points
+        #     for player in players:
+        #         if len(datasets_dict[player.name]["data"]) == 0:
+        #             datasets_dict[player.name]["data"].append(0)
+        #             datasets_dict[player.name]["pointRadius"].append(5)
+        #             datasets_dict[player.name]["pointHitRadius"].append(5)
+        #             datasets_dict[player.name]["pointStyle"].append("circle")
     for key, value in datasets_dict.items():
         result_dict["datasets"].append(
             {
