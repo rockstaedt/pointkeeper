@@ -1,9 +1,9 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint
 from sqlalchemy import desc, asc, func
 from datetime import datetime
 
-
 from doppelkopf.extensions import db
+
 from doppelkopf.models import Player, Game, Result
 
 analysis = Blueprint('analysis', __name__)
@@ -74,7 +74,7 @@ def rangliste_chart():
                 "pointStyle": value["pointStyle"]
             }
         )
-    return jsonify(result_dict)
+    return result_dict
 
 @analysis.route('/punkte_chart', methods = ["GET"])
 def punkte_chart():
@@ -120,14 +120,6 @@ def punkte_chart():
                 datasets_dict[player]["pointRadius"].append(5)
                 datasets_dict[player]["pointHitRadius"].append(5)
                 datasets_dict[player]["pointStyle"].append("circle")
-        # if i == 0:
-        #     # In the first game, one player does not have points -> 0 points
-        #     for player in players:
-        #         if len(datasets_dict[player.name]["data"]) == 0:
-        #             datasets_dict[player.name]["data"].append(0)
-        #             datasets_dict[player.name]["pointRadius"].append(5)
-        #             datasets_dict[player.name]["pointHitRadius"].append(5)
-        #             datasets_dict[player.name]["pointStyle"].append("circle")
     for key, value in datasets_dict.items():
         result_dict["datasets"].append(
             {
@@ -138,4 +130,4 @@ def punkte_chart():
                 "pointStyle": value["pointStyle"]
             }
         )
-    return jsonify(result_dict)
+    return result_dict

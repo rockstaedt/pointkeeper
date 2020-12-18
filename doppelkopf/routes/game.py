@@ -1,9 +1,19 @@
-from flask import Blueprint, render_template, request, flash, url_for, redirect
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    flash,
+    url_for,
+    redirect
+)
 from datetime import datetime
 
 
 from doppelkopf.extensions import db
+
 from doppelkopf.models import Player, Game, Result
+
+from doppelkopf.resource_models import player_rm
 
 form_key_to_description = {
     "date": "das Datum",
@@ -57,7 +67,7 @@ def save_game():
         )
         db.session.add(result)
         # update players game statistics
-        player.update_game_statistics()
+        player_rm.update_game_statistics(player_id)
     db.session.commit()
     flash("Spiel gespeichert!", "success")
     return redirect("/#spielliste")
@@ -67,13 +77,17 @@ def update_game(id):
     for key, value in request.form.items():
         if request.form[key] == "":
             flash("Spiel nicht geändert!"
-                + f" Eintrag für {form_key_to_description[key[7:]]} hat gefehlt.",
+                + f" Eintrag für {form_key_to_description[key[7:]]}"
+                + "hat gefehlt.",
                 "danger"
             )
             return redirect("/#spielliste")
     # update game
     game_to_update= Game.query.get(id)
-    game_to_update.date = datetime.strptime(request.form["update_date"], "%Y-%m-%d")
+    game_to_update.date = datetime.strptime(
+        request.form["update_date"],
+        "%Y-%m-%d"
+    )
     game_to_update.played_matches = request.form["update_games"]
     # update results
     for i in range(1,5):
@@ -81,9 +95,12 @@ def update_game(id):
         player = Player.query.get(player_id)
         player_points = request.form[f"update_points_player{i}"]
         # update players game statistics
-        player.update_game_statistics()
+        player_rm.update_game_statistics(player_id)
         # get result and update
-        result = Result.query.filter_by(game_id = id, player_id = player_id).one()
+        result = Result.query.filter_by(
+            game_id = id,
+            player_id = player_id
+        ).one()
         result.points = player_points
     db.session.commit()
 
@@ -101,7 +118,7 @@ def delete_game(id):
     # update game statistics
     players = Player.query.all()
     for player in players:
-        player.update_game_statistics()
+        player_rm.update_game_statistics(player.id)
     db.session.commit()
     flash(f"Spiel {id} gelöscht!", "success")
     return redirect("/#spielliste")

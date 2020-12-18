@@ -1,8 +1,15 @@
-from flask import Blueprint, render_template, request, flash, url_for, redirect
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    flash,
+    url_for,
+    redirect
+)
 from datetime import datetime
 
-
 from doppelkopf.extensions import db
+
 from doppelkopf.models import Player, Game, Result
 
 ranking = Blueprint("ranking", __name__)
