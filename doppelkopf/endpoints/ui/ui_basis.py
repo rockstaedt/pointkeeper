@@ -17,12 +17,11 @@ from doppelkopf.resource_models import (
     player_rm
 )
 
-basis = Blueprint('basis', __name__)
+ui_basis = Blueprint('ui_basis', __name__)
 
-@basis.route('/home', methods = ["GET"])
-@basis.route('/', methods = ["GET"])
-@basis.route("/#spielliste", methods = ["GET"])
-@basis.route("/#rangliste", methods = ["GET"])
+@ui_basis.route('/home', methods = ['GET'])
+# @basis.route('/#spielliste', methods = ['GET'])
+# @basis.route('/#rangliste', methods = ['GET'])
 def home():
     games = Game.query.order_by(Game.date).all()
     players = Player.query.order_by(Player.name).all()
@@ -41,10 +40,15 @@ def home():
             player.id
         )
     players_ranked = Player.query.order_by(Player.ranking).all()
-    return render_template("index.html",
-        games = games,
-        players = players,
-        players_ranked  = players_ranked,
-        player_results = player_results,
-        player_statistics =  player_statistics
-    )
+    return render_template('home.html')
+    # return render_template('index.html',
+    #     games = games,
+    #     players = players,
+    #     players_ranked  = players_ranked,
+    #     player_results = player_results,
+    #     player_statistics =  player_statistics
+    # )
+
+@ui_basis.route('/', methods = ['GET'])
+def start():
+    return render_template('index.html')

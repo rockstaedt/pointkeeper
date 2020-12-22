@@ -4,12 +4,14 @@ from .extensions import db
 
 from .commands import create_tables
 
-from .routes.basis import basis
-from .routes.game import game
-from .routes.ranking import ranking
-from .routes.analysis import analysis
+from .endpoints.api import (
+    api_analysis,
+    api_game,
+    api_ranking
+)
+from .endpoints.ui import ui_basis
 
-def create_app(config_file = "settings.py"):
+def create_app(config_file = 'settings.py'):
 
     app = Flask(__name__)
 
@@ -17,10 +19,10 @@ def create_app(config_file = "settings.py"):
 
     db.init_app(app)
 
-    app.register_blueprint(basis)
-    app.register_blueprint(game)
-    app.register_blueprint(ranking)
-    app.register_blueprint(analysis)
+    app.register_blueprint(ui_basis)
+    app.register_blueprint(api_game)
+    app.register_blueprint(api_ranking)
+    app.register_blueprint(api_analysis)
 
     app.cli.add_command(create_tables)
 
