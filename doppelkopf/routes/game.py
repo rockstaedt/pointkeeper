@@ -55,7 +55,7 @@ def save_game():
     db.session.add(played_game)
 
     # create results and add to database
-    for i in range(1,5):
+    for i in range(1,6):
         player_id = request.form[f"id_player{i}"]
         player = Player.query.get(player_id)
         player_points = request.form[f"points_player{i}"]
@@ -90,7 +90,7 @@ def update_game(id):
     )
     game_to_update.played_matches = request.form["update_games"]
     # update results
-    for i in range(1,5):
+    for i in range(1,6):
         player_id = request.form[f"update_id_player{i}"]
         player = Player.query.get(player_id)
         player_points = request.form[f"update_points_player{i}"]
