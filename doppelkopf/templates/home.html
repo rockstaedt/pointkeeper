@@ -1,28 +1,63 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div class="card text-center">
-        <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Active</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Disabled</a>
-            </li>
-        </ul>
+    <nav class="navbar navbar-expand-sm navbar-dark mt-2" style="background-color: black;">
+        <a class="navbar-brand" href="/home">Stammtisch</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" id="test" href="/games">Spiele</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/ranking">Rangliste</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Analyse</a>
+                </li>
+            </ul>
         </div>
-        <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+    </nav>
+    <div class="container mt-5">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 text-center">
+                <h2>Spieler</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-center mt-4">
+            <div class="col-4 text-center">
+                <img class="user-pic" src="static/img/Eric.png" alt="Eric">
+            </div>
+            <div class="col-4 text-center">
+                <img class="user-pic" src="static/img/Lucas.png" alt="Lucas">
+            </div>
+            <div class="col-4 text-center">
+                <img class="user-pic" src="static/img/Peer.png" alt="Peer">
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-center mt-3">
+            <div class="col-6 text-center">
+                <img class="user-pic" src="static/img/Marco.png" alt="Marco">
+            </div>
+            <div class="col-6 text-center">
+                <img class="user-pic" src="static/img/Nils.png" alt="Nils">
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center mt-5">
+        <div class="col-12 text-center">
+            <h2>Spiele</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center mt-4">
+        <div class="numberCircle text-center">
+            30
         </div>
     </div>
 {% endblock content %}
 
 {% block scripts %}
-    {{ super() }}
 {% endblock scripts %}

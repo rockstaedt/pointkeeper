@@ -28,3 +28,21 @@ img {
     color: #CCCCCC;
 }
 
+.user-pic {
+    height: 100px;
+    width: 100px;
+}
+
+.numberCircle {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    padding: 8px;
+
+    background: #fff;
+    border: 2px solid #666;
+    color: #666;
+    text-align: center;
+
+    font: 32px Arial, sans-serif;
+}

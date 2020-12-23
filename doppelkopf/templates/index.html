@@ -1,32 +1,33 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div class="row row-start-pic justify-content-center align-items-center">
-        <div class="col-6 col-start text-center">
-            <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
+    <div class="container h-100">
+        <div class="row row-start-pic justify-content-center align-items-center">
+            <div class="col-6 col-start text-center">
+                <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
+            </div>
+            <div class="col-6 col-start text-center">
+                <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
+            </div>
         </div>
-        <div class="col-6 col-start text-center">
-            <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
+        <div class="row row-start-header justify-content-center align-items-center">
+            <div class="col-12 text-center">
+                <h1 class="header-start">Doppelkopf</h1>
+                <a class="btn-circle" role="button" href="/home">
+                    <i class="fa fa-angle-double-right animated" style="font-size: 25px;"></i>
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="row row-start-header justify-content-center align-items-center">
-        <div class="col-12 text-center">
-            <h1 class="header-start">Doppelkopf Stammtisch</h1>
-            <a class="btn-circle" role="button" href="/home">
-                <i class="fa fa-angle-double-right animated"></i>
-            </a>
-        </div>
-    </div>
-    <div class="row row-start-pic justify-content-center align-items-center">
-        <div class="col-6 col-start text-center">
-            <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
-        </div>
-        <div class="col-6 col-start text-center">
-            <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
+        <div class="row row-start-pic justify-content-center align-items-center">
+            <div class="col-6 col-start text-center">
+                <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
+            </div>
+            <div class="col-6 col-start text-center">
+                <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
+            </div>
         </div>
     </div>
 {% endblock content %}
 
 {% block scripts %}
-    {{ super() }}
 {% endblock scripts %}
