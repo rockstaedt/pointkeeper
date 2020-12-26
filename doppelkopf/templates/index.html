@@ -57,7 +57,7 @@
                                     {% for player in players %}
                                         <th id="{{player.name}}"> {{ player.name }} </th>
                                     {% endfor %}
-                                    <!-- <th></th> -->
+                                    <th></th>
                                     <!-- <th></th> -->
                                 </tr>
                             </thead>
@@ -75,11 +75,11 @@
                                                 {% endif %}
                                             </td>
                                         {% endfor %}
-                                        <!-- <td>
+                                        <td>
                                             <a role="button" data-toggle="modal" data-target="#update_game_modal">
                                                 <i class="far fa-edit" id="{{ game.id }}" onClick="get_game_data(this.id)" style="color: #27d192;"></i>
                                             </a>
-                                        </td> -->
+                                        </td>
                                         <!-- <td>
                                             <a role="button" class="delete-button" href="/delete_game/{{ game.id }}">
                                                 <i class="far fa-trash-alt" id="{{ game.id }}" onClick="show_delete_alert(this.id)" style="color: Tomato;"></i>
