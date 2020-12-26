@@ -1,0 +1,27 @@
+{% extends "layouts/layout.html" %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-sm navbar-dark mt-2" style="background-color: black;">
+        <a class="navbar-brand" href="/home">Stammtisch</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" id="test" href="/games">Spiele</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/ranking">Rangliste</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Analyse</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

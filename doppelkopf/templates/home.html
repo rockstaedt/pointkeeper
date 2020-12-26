@@ -1,27 +1,8 @@
-{% extends "layout.html" %}
+{% extends "layouts/layout_app.html" %}
 
 {% block content %}
-    <nav class="navbar navbar-expand-sm navbar-dark mt-2" style="background-color: black;">
-        <a class="navbar-brand" href="/home">Stammtisch</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" id="test" href="/games">Spiele</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/ranking">Rangliste</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Analyse</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="container mt-5">
+    {{ super() }}
+    <div class="container mt-3">
         <div class="row justify-content-center align-items-center">
             <div class="col-12 text-center">
                 <h2>Spieler</h2>
@@ -46,18 +27,72 @@
                 <img class="user-pic" src="static/img/Nils.png" alt="Nils">
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center align-items-center mt-5">
-        <div class="col-12 text-center">
-            <h2>Spiele</h2>
+        <div class="row justify-content-center align-items-center mt-5">
+            <div class="col-12 text-center">
+                <h2>Statistiken</h2>
+            </div>
         </div>
-    </div>
-    <div class="row justify-content-center align-items-center mt-4">
-        <div class="numberCircle text-center">
-            30
+        <div class="row justify-content-center align-items-center mt-4">
+            <div class="col-6">
+                <h5>Anzahl Spiele</h5>
+            </div>
+            <div class="col-3">
+                <h6>{{games_count}}</h6>
+            </div>
+            <div class="col-3">
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-6">
+                <h5>Meiste Punkte</h5>
+            </div>
+            <div class="col-3">
+                <h6>Nils</h6>
+            </div>
+            <div class="col-3">
+                <h6>179</h6>
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-6">
+                <h5>All time winner</h5>
+            </div>
+            <div class="col-3">
+                <h6>Nils</h6>
+            </div>
+            <div class="col-3">
+                <h6>179</h6>
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-6">
+                <h5>All time looser</h5>
+            </div>
+            <div class="col-3">
+                <h6>Nils</h6>
+            </div>
+            <div class="col-3">
+                <h6>179</h6>
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-6">
+                <h5>Freizeitkönig</h5>
+            </div>
+            <div class="col-3">
+                <h6>Nils</h6>
+            </div>
+            <div class="col-3">
+                <h6>179</h6>
+            </div>
         </div>
     </div>
 {% endblock content %}
 
 {% block scripts %}
+
 {% endblock scripts %}

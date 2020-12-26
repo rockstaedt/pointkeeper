@@ -1,33 +1,562 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html>
 
-{% block content %}
-    <div class="container h-100">
-        <div class="row row-start-pic justify-content-center align-items-center">
-            <div class="col-6 col-start text-center">
-                <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
-            </div>
-            <div class="col-6 col-start text-center">
-                <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Doppelkopf Stammtisch</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.js" integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin:700">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="static/js/script.min.js"></script>
+    <script src="https://kit.fontawesome.com/5a7b8770d3.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js" integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js" integrity="sha512-qRj8N7fxOHxPkKjnQ9EJgLJ8Ng1OK7seBn1uk8wkqaXpa7OA13LO6txQ7+ajZonyc9Ts4K/ugXljevkFTUGBcw==" crossorigin="anonymous"></script>
+</head>
+
+<body id="page-top">
+    <header class="masthead" style="background: url(&quot;static/img/pexels-prathsnap-4017663.jpg&quot;) round;background-size: cover;filter: brightness(83%) saturate(121%) sepia(21%);opacity: 0.82;max-height: 660;">
+        <div class="intro-body">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h1 class="brand-heading">Doppelkopf Stammtisch</h1>
+                    <a class="btn btn-link btn-circle" role="button" href="#spielliste"><i class="fa fa-angle-double-down animated"></i></a>
+                </div>
             </div>
         </div>
-        <div class="row row-start-header justify-content-center align-items-center">
-            <div class="col-12 text-center">
-                <h1 class="header-start">Doppelkopf</h1>
-                <a class="btn-circle" role="button" href="/home">
-                    <i class="fa fa-angle-double-right animated" style="font-size: 25px;"></i>
-                </a>
+    </header>
+    <section id="spielliste" class="content-section text-center" style="background: #232121;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 mx-auto">
+                    {% with messages = get_flashed_messages(with_categories = true) %}
+                        {% if messages  %}
+                            {% for category, message in messages  %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <h2 style="margin-bottom: 50px;">Spiel Liste</h2>
+                    <div class="table-responsive">
+                        <table class="table" style="color: #cccccc;">
+                            <thead>
+                                <tr>
+                                    <th id="date_header">Datum</th>
+                                    <th id="games_header">Gespielte Partien</th>
+                                    {% for player in players %}
+                                        <th id="{{player.name}}"> {{ player.name }} </th>
+                                    {% endfor %}
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody style="color: #cccccc;">
+                                {% for game in games %}
+                                    <tr id="game_entries_{{game.id}}">
+                                        <td id="date" headers="date_header">{{ game.date.strftime("%d.%m.%Y") }}</td>
+                                        <td id="games" haeders="games_header">{{ game.played_matches }}</td>
+                                        {% for player in players %}
+                                            <td id="points_{{player.name}}_{{player.id}}" headers="{{player.name}}">
+                                                {% if game.id in player_results and player.name in player_results[game.id] %}
+                                                    {{player_results[game.id][player.name]}}
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                        <td>
+                                            <a role="button" data-toggle="modal" data-target="#update_game_modal">
+                                                <i class="far fa-edit" id="{{ game.id }}" onClick="get_game_data(this.id)" style="color: #27d192;"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a role="button" class="delete-button" href="/delete_game/{{ game.id }}">
+                                                <i class="far fa-trash-alt" id="{{ game.id }}" onClick="show_delete_alert(this.id)" style="color: Tomato;"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_game_modal">Spiel hinzufügen</button>
+                </div>
             </div>
         </div>
-        <div class="row row-start-pic justify-content-center align-items-center">
-            <div class="col-6 col-start text-center">
-                <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
+    </section>
+    <section id="rangliste" class="content-section text-center" style="background: #232121;">
+        <div class="container">
+            <div class="col-lg-8 mx-auto">
+                <h1 style="margin-bottom: 50px;">Ewige Rangliste</h1>
+                <div class="table-responsive">
+                    <table class="table" style="color: #cccccc;">
+                        <thead>
+                            <tr>
+                                <th>Rang</th>
+                                <th>Spieler</th>
+                                <th>Punkte</th>
+                                <th>Spiele</th>
+                                <th>Punkte pro Spiel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for player in players_ranked %}
+                                <tr>
+                                    <td>{{player_statistics[player.id]["ranking"]}}</td>
+                                    <td>{{player.name}}</td>
+                                    <td>{{player_statistics[player.id]["total_points"]}}</td>
+                                    <td>{{player_statistics[player.id]["total_games"]}}</td>
+                                    <td>{{player_statistics[player.id]["points_game_ration"]}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="col-6 col-start text-center">
-                <img src="static/img/Kreuzdame.jpg" alt="Kreuzdame">
+        </div>
+    </section>
+    <section id="analyse" class="content-section text-center" style="background: #232121;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h1 style="margin-bottom: 50px;">Analyse</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h5 style="margin-bottom: 25px;">Platzierung</h5>
+                    <canvas id="rangliste_chart" height="345" width="690" style="max-height: 100%; max-width: 100%;"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h5 style="margin-bottom: 25px; margin-top: 100px;">Gesamtpunkte</h5>
+                    <canvas id="punkte_chart" height="345" width="690" style="max-height: 100%; max-width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Modal -->
+<form id="add_game_form" method="POST" action="{{url_for("game.save_game")}}" data-toggle="validator" role="form">
+    <div class="modal fade" id="add_game_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="color: #232121;">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Spiel hinzufügen</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label for="date" class="col-sm-2 col-form-label">Datum</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="date" name="date">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="games" class="col-sm-2 col-form-label">Partien</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="games" name="games">
+                    </div>
+                </div>
+                <h6 style="border-bottom: #212529 solid 1px; padding-bottom: 5px; margin-bottom: 30px;margin-top: 20px;">Punkte</h6>
+                {% for i in range(1, 5)  %}
+                    <div class="form-group row">
+                        <div class="form-group col-sm-8">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="id_player{{i}}">Spieler {{i}}</label>
+                                <select class="custom-select" id="id_player{{i}}" name="id_player{{i}}">
+                                    <option selected value="no_player_selected">Wähle...</option>
+                                    {% for player in players %}
+                                        <option value="{{player.id}}">{{player.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <input type="number" class="form-control" id="points_player{{i}}" name="points_player{{i}}">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                <button type="submit" class="btn btn-primary">Speichern</button>
+              </div>
             </div>
         </div>
     </div>
-{% endblock content %}
+</form>
 
-{% block scripts %}
-{% endblock scripts %}
+<form id="game_update_form" method="POST" action="/update_game/1" data-toggle="validator" role="form">
+    <div class="modal fade" id="update_game_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="color: #232121;">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Spiel aktualisieren</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label for="update_date" class="col-sm-2 col-form-label">Datum</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="update_date" name="update_date">
+                        <input type="number" id="game_id" name="game_id" hidden>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="update_games" class="col-sm-2 col-form-label">Partien</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="update_games" name="update_games">
+                    </div>
+                </div>
+                <h6 style="border-bottom: #212529 solid 1px; padding-bottom: 5px; margin-bottom: 30px;margin-top: 20px;">Punkte</h6>
+                {% for i in range(1, 5)  %}
+                    <div class="form-group row">
+                        <div class="input-group col-sm-12">
+                            <div class="input-group-prepend">
+                                <span id = "update_name_player{{i}}" name = "update_name_player{{i}}" class="input-group-text" style="width: 100px;"></span>
+                            </div>
+                            <input type="number" class="form-control" id="update_points_player{{i}}" name="update_points_player{{i}}">
+                            <input type="number" class="form-control" id="update_id_player{{i}}" name="update_id_player{{i}}" hidden>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                <button type="submit" class="btn btn-primary" onClick="return set_action_form()">Ändern</button>
+              </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+</body>
+
+<script>
+
+    var rangliste_ctx = $('#rangliste_chart')[0].getContext('2d');
+
+    var punkte_ctx = $('#punkte_chart')[0].getContext('2d');
+
+    var datasets_rangliste = [];
+
+    var datasets_punkte = [];
+
+    var eric_img = new Image(40,40);
+    var lucas_img = new Image(40,40);
+    var marco_img = new Image(40,40);
+    var peer_img = new Image(40,40);
+    var nils_img = new Image(40,40);
+    eric_img.src ='static/img/Eric.png';
+    lucas_img.src ='static/img/Lucas.png';
+    marco_img.src ='static/img/Marco.png';
+    peer_img.src ='static/img/Peer.png';
+    nils_img.src ='static/img/Nils.png';
+
+    var player_to_pic = {
+        'Eric': eric_img,
+        'Lucas': lucas_img,
+        'Nils': nils_img,
+        'Marco': marco_img,
+        'Peer': peer_img
+    };
+
+    Chart.defaults.global.defaultFontColor = '#cccccc'
+
+    Chart.Legend.prototype.afterFit = function() {
+        this.height = this.height + 20;
+    };
+
+    var getData_rangliste = $.get("rangliste_chart");
+
+    getData_rangliste.done(function(data) {
+
+        for (dataset of data.datasets) {
+            datasets_rangliste.push(
+                {
+                    label: dataset.label,
+                    tension: 0,
+                    backgroundColor: "#43DCA3",
+                    borderColor: "#43DCA3",
+                    data: dataset.data,
+                    fill: false,
+                    pointRadius: dataset.pointRadius,
+                    pointHitRadius: dataset.pointHitRadius,
+                    pointStyle: dataset.pointStyle
+                }
+            )
+        };
+
+        for (dataset of datasets_rangliste) {
+            dataset.pointRadius.push(20),
+            dataset.pointHitRadius.push(20),
+            dataset.pointStyle.push(player_to_pic[dataset.label])
+        };
+
+        var chart = new Chart(rangliste_ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: data.labels,
+                datasets: datasets_rangliste,
+            },
+
+            // Configuration options go here
+            options: {
+                legend: {
+                    display: false
+                 },
+                responsive: false,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [
+                        {
+                            ticks : {
+                                reverse : true,
+                                padding: 20,
+                                callback: function(value, index, values) {
+                                    if (Math.floor(value) === value) {
+                                        return Math.round(value);
+                                    };
+                                }
+                            },
+                            max: 5,
+                            min: 1,
+                            gridLines: {
+                                display: true,
+                                color: '#000000',
+                                linewidth: 0.5,
+                                drawBorder: false,
+                            },
+                        }
+                    ],
+                    xAxes: [
+                        {
+                            type: 'time',
+                            distribution: 'series',
+                            time: {
+                                unit: 'day',
+                                displayFormats: {
+                                    day: 'DD.MM.YYYY'
+                                }
+                            },
+                            ticks: {
+                                padding: 20,
+                            },
+                            gridLines: {
+                                display: false,
+                            },
+                        }
+                    ],
+                },
+                plugins: {
+                    zoom: {
+                        // Container for pan options
+                        pan: {
+                            // Boolean to enable panning
+                            enabled: true,
+
+                            // Panning directions. Remove the appropriate direction to disable
+                            // Eg. 'y' would only allow panning in the y direction
+                            mode: 'xy'
+                        },
+
+                        // Container for zoom options
+                        zoom: {
+                            // Boolean to enable zooming
+                            enabled: true,
+
+                            // Zooming directions. Remove the appropriate direction to disable
+                            // Eg. 'y' would only allow zooming in the y direction
+                            mode: 'xy',
+                            speed: 0.05
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+    var getData_punkte = $.get("punkte_chart");
+
+    getData_punkte.done(function(data) {
+
+        for (dataset of data.datasets) {
+            datasets_punkte.push(
+                {
+                    label: dataset.label,
+                    backgroundColor: "#43DCA3",
+                    tension: 0.2,
+                    borderColor: "#43DCA3",
+                    data: dataset.data,
+                    fill: false,
+                    pointRadius: dataset.pointRadius,
+                    pointHitRadius: dataset.pointHitRadius,
+                    pointStyle: dataset.pointStyle
+                }
+            )
+        };
+
+        for (dataset of datasets_punkte) {
+            dataset.pointRadius.push(20),
+            dataset.pointHitRadius.push(20),
+            dataset.pointStyle.push(player_to_pic[dataset.label])
+        };
+
+        var chart = new Chart(punkte_ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: data.labels,
+                datasets: datasets_punkte,
+            },
+
+            // Configuration options go here
+            options: {
+                legend: {
+                    display: false
+                 },
+                responsive: false,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [
+                        {
+                            ticks : {
+                                padding: 20,
+                                callback: function(value, index, values) {
+                                    return Math.round(value);
+                                }
+                            },
+                            gridLines: {
+                                display: true,
+                                color: '#000000',
+                                linewidth: 0.5,
+                                drawBorder: false,
+                            },
+                        }
+                    ],
+                    xAxes: [
+                        {
+                            type: 'time',
+                            distribution: 'series',
+                            time: {
+                                unit: 'day',
+                                displayFormats: {
+                                    day: 'DD.MM.YYYY'
+                                }
+                            },
+                            ticks: {
+                                padding: 20,
+                            },
+                            gridLines: {
+                                display: false,
+                            },
+                        }
+                    ],
+                },
+                plugins: {
+                    zoom: {
+                        // Container for pan options
+                        pan: {
+                            // Boolean to enable panning
+                            enabled: true,
+
+                            // Panning directions. Remove the appropriate direction to disable
+                            // Eg. 'y' would only allow panning in the y direction
+                            mode: 'xy'
+                        },
+
+                        // Container for zoom options
+                        zoom: {
+                            // Boolean to enable zooming
+                            enabled: true,
+
+                            // Zooming directions. Remove the appropriate direction to disable
+                            // Eg. 'y' would only allow zooming in the y direction
+                            mode: 'xy',
+                            speed: 0.05
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+    function show_delete_alert(clicked_id)
+    {
+        event.preventDefault();
+        swal({
+            title: "Bist du sicher?",
+            text: "Einmal gelöscht, verschwindet das Spiel ins Nichts.",
+            icon: "warning",
+            buttons: ["Abbrechen", "Löschen"],
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              swal("Spiel gelöscht", {
+                icon: "success",
+              })
+              .then((deleted) => {
+                  if (deleted) {
+                    window.location.href = "/delete_game/" + clicked_id;
+                  }
+              });
+            } else {
+                window.location.href = "/#spielliste";
+            }
+          });
+    }
+
+    function get_game_data(game_id)
+    {
+        player_number = 1;
+        $('#game_entries_' + game_id).children('td').each(function () {
+            if (this.id == "games"){
+                $('#update_' + this.id).attr("value", this.innerText);
+            }else if (this.id == "date"){
+                date_parts = this.innerText.split(".");
+                // add two hours to prevent error in UTC conversion
+                date = new Date(parseInt(date_parts[2]), parseInt(date_parts[1])-1, parseInt(date_parts[0]), 2);
+                $('#update_' + this.id).attr("value", date.toISOString().substring(0,10));
+            }else if (this.id.substring(0,6) == "points"){
+                if(this.innerText != "-"){
+                    $("#update_name_player" + player_number).text(this.headers);
+                    $('#update_points_player' + player_number).attr("value", this.innerText);
+                    player_id = this.id.split("_")[2]
+                    $('#update_id_player' + player_number).attr("value", player_id);
+                    player_number = player_number + 1;
+                };
+            };
+        });
+        $("#game_id").attr("value", game_id);
+    }
+
+    function set_action_form()
+    {
+        $("#game_update_form").attr("action", "update_game/" + $("#game_id").val());
+    }
+</script>
+
+</html>
