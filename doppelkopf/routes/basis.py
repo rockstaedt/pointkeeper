@@ -19,8 +19,11 @@ from doppelkopf.resource_models import (
 
 basis = Blueprint('basis', __name__)
 
-@basis.route('/home', methods = ["GET"])
 @basis.route('/', methods = ["GET"])
+def start():
+    return '<h1>Under Construction</h1>'
+
+@basis.route('/home', methods = ["GET"])
 @basis.route("/#spielliste", methods = ["GET"])
 @basis.route("/#rangliste", methods = ["GET"])
 def home():
