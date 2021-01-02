@@ -15,3 +15,6 @@ class Player(db.Model):
     total_games = db.Column(db.Integer, default=0)
     total_points = db.Column(db.Integer, default=0)
     points_game_ration = db.Column(db.Float, default=0.0)
+
+    def __repr__(self):
+        return f'Player(ID: {self.id}, Name: {self.name})'
