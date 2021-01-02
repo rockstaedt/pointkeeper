@@ -2,13 +2,13 @@
 
 {% block content %}
     {{ super() }}
-    <div class="container mt-3">
+    <div class="container mt-2">
         <div class="row justify-content-center align-items-center">
             <div class="col-12 text-center">
-                <h2>Spieler</h2>
+                <h3>Spieler</h3>
             </div>
         </div>
-        <div class="row justify-content-center align-items-center mt-4">
+        <div class="row justify-content-center align-items-center mt-2">
             <div class="col-4 text-center">
                 <img class="user-pic" src="static/img/Eric.png" alt="Eric">
             </div>
@@ -27,12 +27,12 @@
                 <img class="user-pic" src="static/img/Nils.png" alt="Nils">
             </div>
         </div>
-        <div class="row justify-content-center align-items-center mt-5">
+        <div class="row justify-content-center align-items-center mt-3">
             <div class="col-12 text-center">
-                <h2>Statistiken</h2>
+                <h3>Statistiken</h3>
             </div>
         </div>
-        <div class="row justify-content-center align-items-center mt-4">
+        <div class="row justify-content-center align-items-center mt-3">
             <div class="col-6">
                 <h5>Anzahl Spiele</h5>
             </div>
@@ -45,54 +45,65 @@
         <hr>
         <div class="row justify-content-center align-items-center">
             <div class="col-6">
-                <h5>Meiste Punkte</h5>
+                <h5>Abräumer</h5>
+                <small>(Punkte pro Spiel)</small>
             </div>
             <div class="col-3">
-                <h6>Nils</h6>
+                <h6>{{player_most_points.name}}</h6>
             </div>
             <div class="col-3">
-                <h6>179</h6>
+                {{'%0.2f' % player_most_points.points_game_ration|float}}
             </div>
         </div>
         <hr>
         <div class="row justify-content-center align-items-center">
             <div class="col-6">
-                <h5>All time winner</h5>
+                <h5>Gewinnertyp</h5>
+                <small>(Meiste Siege)</small>
             </div>
             <div class="col-3">
-                <h6>Nils</h6>
+                <h6>{{player_most_wins[0].name}}</h6>
             </div>
             <div class="col-3">
-                <h6>179</h6>
+                <h6>{{player_most_wins[1]}}</h6>
             </div>
         </div>
         <hr>
         <div class="row justify-content-center align-items-center">
             <div class="col-6">
-                <h5>All time looser</h5>
+                <h5>Kellerkind</h5>
+                <small>(Meiste Niederlage)</small>
             </div>
             <div class="col-3">
-                <h6>Nils</h6>
+                <h6>{{player_most_defeats[0].name}}</h6>
             </div>
             <div class="col-3">
-                <h6>179</h6>
+                <h6>{{player_most_defeats[1]}}</h6>
             </div>
         </div>
         <hr>
         <div class="row justify-content-center align-items-center">
             <div class="col-6">
                 <h5>Freizeitkönig</h5>
+                <small>(Meiste Spiele)</small>
             </div>
             <div class="col-3">
-                <h6>Nils</h6>
+                <h6>{{player_most_games[0].name}}</h6>
             </div>
             <div class="col-3">
-                <h6>179</h6>
+                <h6>{{player_most_games[1]}}</h6>
             </div>
         </div>
     </div>
 {% endblock content %}
 
 {% block scripts %}
-
+    <script>
+        $(document).ready(function() {
+            // show the alert
+            setTimeout(function() {
+                $(".alert").alert('close');
+            }, 2000);
+        });
+    </script>
 {% endblock scripts %}
