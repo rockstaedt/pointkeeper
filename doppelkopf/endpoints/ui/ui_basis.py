@@ -8,7 +8,7 @@ from flask import (
 )
 from datetime import datetime
 import pandas as pd
-from sqlalchemy import select
+from sqlalchemy import select, desc
 
 from doppelkopf.extensions import db
 
@@ -16,7 +16,8 @@ from doppelkopf.models import Player, Game, Result
 
 from doppelkopf.resource_models import (
     result_rm,
-    player_rm
+    player_rm,
+    game_rm
 )
 
 ui_basis = Blueprint('ui_basis', __name__)
@@ -50,15 +51,48 @@ ui_basis = Blueprint('ui_basis', __name__)
 #     #     player_statistics =  player_statistics
 #     # )
 
-@ui_basis.route('/', methods=['GET'])
+@ui_basis.route('/')
 def start():
     return render_template('start.html')
 
-@ui_basis.route('/home', methods=['GET'])
+@ui_basis.route('/home')
 def home():
+    # get counter for games
     games= Game.query.order_by(Game.date).all()
     games_count = len(games)
+    # get player with most points
+    player_most_points = Player.query.order_by(
+        desc(Player.points_game_ration)
+    ).first()
+    # get player with most played games
+    player_id_to_total_games = result_rm.get_total_games_all()
+    player_most_games = Player.query.get(max(
+        player_id_to_total_games,
+        key=player_id_to_total_games.get)
+    )
+    # get player with most wins
+    player_id_to_wins = result_rm.get_counter_placement_all(1)
+    player_most_wins = Player.query.get(max(
+        player_id_to_wins,
+        key=player_id_to_wins.get)
+    )
+    player_id_to_defeats = result_rm.get_counter_placement_all(-1)
+    print(player_id_to_defeats)
+    player_most_defeats = Player.query.get(max(
+        player_id_to_defeats,
+        key=player_id_to_defeats.get)
+    )
     return render_template(
         'home.html',
-        games_count = games_count
+        games_count=games_count,
+        player_most_points=player_most_points,
+        player_most_games=(
+            player_most_games, player_id_to_total_games[player_most_games.id]
+        ),
+        player_most_wins=(
+            player_most_wins, player_id_to_wins[player_most_wins.id]
+        ),
+        player_most_defeats=(
+            player_most_defeats, player_id_to_defeats[player_most_defeats.id]
+        )
     )
