@@ -1,0 +1,45 @@
+{% extends "layouts/layout_app.html" %}
+
+{% block content %}
+    {{ super() }}
+    <div class="container mt-2">
+        <form id="add_game_form" method="POST" action="{{url_for("api_game.save_game")}}" data-toggle="validator" role="form">
+            <div class="form-group row">
+                <div class="form-group col-8">
+                    <label for="date" class="col-form-label">Datum</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+                <div class="form-group col-4">
+                    <label for="games" class="col-form-label">Partien</label>
+                    <input type="number" class="form-control" id="games" name="games" required>
+                </div>
+            </div>
+            <h6 style="border-bottom: #CCCCCC solid 1px; padding-bottom: 5px; margin-bottom: 30px;margin-top: 20px;">Punkte</h6>
+            {% for i in range(1, 5)  %}
+                <div class="form-group row">
+                    <div class="form-group col-8">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="id_player{{i}}">Spieler {{i}}</label>
+                            <select class="custom-select" id="id_player{{i}}" name="id_player{{i}}" required>
+                                <option selected value="">Wähle...</option>
+                                {% for player in players %}
+                                    <option value="{{player.id}}">{{player.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-4">
+                        <input type="number" class="form-control" id="points_player{{i}}" name="points_player{{i}}" required>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="form-group row justify-content-center align-items-center">
+                <button type="submit" class="btn btn-primary">Speichern</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+
+{% endblock scripts %}
