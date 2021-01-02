@@ -9,7 +9,7 @@ from .endpoints.api import (
     api_game,
     api_ranking
 )
-from .endpoints.ui import ui_basis
+from .endpoints.ui import ui_basis, ui_forms
 
 def create_app(config_file = 'settings.py'):
 
@@ -20,6 +20,7 @@ def create_app(config_file = 'settings.py'):
     db.init_app(app)
 
     app.register_blueprint(ui_basis)
+    app.register_blueprint(ui_forms)
     app.register_blueprint(api_game)
     app.register_blueprint(api_ranking)
     app.register_blueprint(api_analysis)
