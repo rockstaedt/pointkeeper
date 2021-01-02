@@ -2,7 +2,7 @@
 
 {% block content %}
     <nav class="navbar navbar-expand-sm navbar-dark mt-2" style="background-color: black;">
-        <a class="navbar-brand" href="/home">Stammtisch</a>
+        <a class="navbar-brand" href="/home" style="color: #CCCCCC;">Stammtisch</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,17 +10,37 @@
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item active">
-                    <a class="nav-link" id="test" href="/games">Spiele</a>
+                    <a class="nav-link" id="test" href="/save_game" style="color: #CCCCCC;">Spiel hinzufügen</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/ranking">Rangliste</a>
+                    <a class="nav-link" id="test" href="/games" style="color: #CCCCCC;">Spielliste</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/">Analyse</a>
+                    <a class="nav-link" href="/ranking" style="color: #CCCCCC;">Rangliste</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/" style="color: #CCCCCC;">Analyse</a>
                 </li>
             </ul>
         </div>
     </nav>
+    <div class="container mt-2">
+        {% with messages = get_flashed_messages(with_categories = true) %}
+        {% if messages  %}
+            {% for category, message in messages  %}
+                <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div> -->
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
 {% endblock content %}
 
 {% block scripts %}
