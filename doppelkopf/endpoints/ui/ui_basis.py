@@ -57,6 +57,8 @@ def start():
 
 @ui_basis.route('/home')
 def home():
+    # get players
+    players = Player.query.order_by(Player.name).all()
     # get counter for games
     games= Game.query.order_by(Game.date).all()
     games_count = len(games)
@@ -84,6 +86,7 @@ def home():
     )
     return render_template(
         'home.html',
+        players=players,
         games_count=games_count,
         player_most_points=player_most_points,
         player_most_games=(

@@ -8,26 +8,14 @@
                 <h3>Spieler</h3>
             </div>
         </div>
-        <div class="row justify-content-center align-items-center mt-2">
+        <div class="row justify-content-center align-items-center mt-1">
+        {% for player in players %}
             <div class="col-4 text-center">
-                <img class="user-pic" src="static/img/Eric.png" alt="Eric">
+                <img class="user-pic mb-3" src="static/img/{{player.name}}.png" alt="{{player.name}}">
             </div>
-            <div class="col-4 text-center">
-                <img class="user-pic" src="static/img/Lucas.png" alt="Lucas">
-            </div>
-            <div class="col-4 text-center">
-                <img class="user-pic" src="static/img/Peer.png" alt="Peer">
-            </div>
+        {% endfor %}
         </div>
-        <div class="row justify-content-center align-items-center mt-3">
-            <div class="col-6 text-center">
-                <img class="user-pic" src="static/img/Marco.png" alt="Marco">
-            </div>
-            <div class="col-6 text-center">
-                <img class="user-pic" src="static/img/Nils.png" alt="Nils">
-            </div>
-        </div>
-        <div class="row justify-content-center align-items-center mt-3">
+        <div class="row justify-content-center align-items-center mt-1">
             <div class="col-12 text-center">
                 <h3>Statistiken</h3>
             </div>
