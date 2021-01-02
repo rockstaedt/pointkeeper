@@ -15,38 +15,10 @@ from doppelkopf.models import Player, Game, Result
 
 from doppelkopf.resource_models import player_rm
 
-form_key_to_description = {
-    'date': 'das Datum',
-    'games': 'die gespielten Partien',
-    'points_player1': 'Punkte Spieler 1',
-    'points_player2': 'Punkte Spieler 2',
-    'points_player3': 'Punkte Spieler 3',
-    'points_player4': 'Punkte Spieler 4',
-    'id_player1': 'Spieler 1 nicht gewählt.',
-    'id_player2': 'Spieler 2 nicht gewählt.',
-    'id_player3': 'Spieler 3 nicht gewählt.',
-    'id_player4': 'Spieler 4 nicht gewählt.',
-}
-
 api_game = Blueprint('api_game', __name__)
 
 @api_game.route('/api/v1/save_game', methods = ['POST'])
 def save_game():
-    #  check form
-    for key, value in request.form.items():
-        if request.form[key] == '':
-            flash('Spiel nicht gespeichert!'
-                + f' Eintrag für {form_key_to_description[key]} hat gefehlt.',
-                'danger'
-            )
-            return redirect('/#spielliste')
-        elif request.form[key] == 'no_player_selected':
-            flash('Spiel nicht gespeichert!'
-                + f' {form_key_to_description[key]}',
-                'danger'
-            )
-            return redirect('/#spielliste')
-
     # create game and add to database
     played_game = Game(
         date = datetime.strptime(request.form['date'], '%Y-%m-%d'),
@@ -70,19 +42,11 @@ def save_game():
         player_rm.update_game_statistics(player_id)
     db.session.commit()
     flash('Spiel gespeichert!', 'success')
-    return redirect('/#spielliste')
+    return redirect('/home')
 
 @api_game.route('/update_game/<id>', methods = ['POST'])
 def update_game(id):
-    for key, value in request.form.items():
-        if request.form[key] == '':
-            flash('Spiel nicht geändert!'
-                + f' Eintrag für {form_key_to_description[key[7:]]}'
-                + 'hat gefehlt.',
-                'danger'
-            )
-            return redirect('/#spielliste')
-    # update game
+    # get game from database
     game_to_update= Game.query.get(id)
     game_to_update.date = datetime.strptime(
         request.form['update_date'],
