@@ -43,5 +43,6 @@ def update_game(game_id):
         game_id=game_id,
         game_date=game.date.strftime('%d.%m.%Y'),
         game_batches=game.played_matches,
-        result_dic=result_dic
+        result_dic=result_dic,
+        days_for_delete=7
     )
