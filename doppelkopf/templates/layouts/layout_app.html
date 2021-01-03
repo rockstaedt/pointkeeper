@@ -2,7 +2,7 @@
 
 {% block content %}
     <nav class="navbar navbar-expand-sm navbar-dark mt-2" style="background-color: black;">
-        <a class="navbar-brand" href="/home" style="color: #CCCCCC;">Stammtisch</a>
+        <a class="navbar-brand" href="{{url_for("ui_basis.home")}}" style="color: #CCCCCC;">Stammtisch</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,16 +10,16 @@
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item active">
-                    <a class="nav-link" id="test" href="/save_game" style="color: #CCCCCC;">Spiel hinzufügen</a>
+                    <a class="nav-link" id="test" href="{{url_for("ui_forms.add_game")}}" style="color: #CCCCCC;">Spiel hinzufügen</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" id="test" href="/games" style="color: #CCCCCC;">Spielliste</a>
+                    <a class="nav-link" id="test" href="{{url_for("ui_basis.games")}}" style="color: #CCCCCC;">Spielliste</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/ranking" style="color: #CCCCCC;">Rangliste</a>
+                    <a class="nav-link" href="#" style="color: #CCCCCC;">Rangliste</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/" style="color: #CCCCCC;">Analyse</a>
+                    <a class="nav-link" href="#" style="color: #CCCCCC;">Analyse</a>
                 </li>
             </ul>
         </div>
