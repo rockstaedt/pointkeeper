@@ -79,7 +79,6 @@ def home():
         key=player_id_to_wins.get)
     )
     player_id_to_defeats = result_rm.get_counter_placement_all(-1)
-    print(player_id_to_defeats)
     player_most_defeats = Player.query.get(max(
         player_id_to_defeats,
         key=player_id_to_defeats.get)
@@ -98,4 +97,21 @@ def home():
         player_most_defeats=(
             player_most_defeats, player_id_to_defeats[player_most_defeats.id]
         )
+    )
+
+@ui_basis.route('/games', methods=['GET'])
+def games():
+    games = Game.query.order_by(Game.date).all()
+    players = Player.query.order_by(Player.name).all()
+    player_results = {}
+    for game in games:
+        player_results[game.id] = result_rm.get_player_results(
+            game_id = game.id
+        )
+    return render_template(
+        'games.html',
+        player_results=player_results,
+        players=players,
+        games=games,
+        days_for_delete=7
     )

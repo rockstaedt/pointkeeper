@@ -17,5 +17,4 @@ api_ranking = Blueprint('api_ranking', __name__)
 @api_ranking.route('/api/v1/update_ranking', methods = ['GET'])
 def update_ranking():
     player_name_to_points = Result.get_total_points_player()
-    print(player_name_to_points)
     return redirect('/#rangliste')

@@ -39,3 +39,7 @@ hr {
 .table {
     color: #CCCCCC;
 }
+
+.btn-app-size {
+    width: 150px;
+}

@@ -21,7 +21,27 @@ from doppelkopf.resource_models import (
 
 ui_forms = Blueprint('ui_forms', __name__)
 
-@ui_forms.route('/save_game', methods=['GET'])
+@ui_forms.route('/add_game', methods=['GET'])
 def add_game():
     players = Player.query.all()
-    return render_template('save_game.html', players=players)
+    return render_template('add_game.html', players=players)
+
+
+@ui_forms.route('/update_game/<game_id>', methods=['GET'])
+def update_game(game_id):
+    result_dic = {}
+    results = Result.query.filter(Result.game_id == game_id).all()
+    for i, result in enumerate(results):
+        result_dic[result.player_id] = {
+            'index': i+1,
+            'points': result.points,
+            'name': Player.query.get(result.player_id).name
+        }
+    game = Game.query.get(game_id)
+    return render_template(
+        'update_game.html',
+        game_id=game_id,
+        game_date=game.date.strftime('%d.%m.%Y'),
+        game_batches=game.played_matches,
+        result_dic=result_dic
+    )
