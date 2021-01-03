@@ -4,12 +4,13 @@ from .extensions import db
 
 from .commands import create_tables
 
-from .endpoints.api import (
+from .endpoints import (
     api_analysis,
     api_game,
-    api_ranking
+    api_ranking,
+    ui_basis,
+    ui_forms
 )
-from .endpoints.ui import ui_basis, ui_forms
 
 def create_app(config_file = 'settings.py'):
 
