@@ -10,6 +10,10 @@ hr {
     border-color: #CCCCCC;
 }
 
+th {
+    border-top: none !important;
+}
+
 .body-dark {
     background-color: black;
     color: #CCCCCC;
@@ -42,4 +46,14 @@ hr {
 
 .btn-app-size {
     width: 150px;
+}
+
+.nav-link {
+    color: #CCCCCC !important;
+    background-color: black !important;
+    border-bottom-color: #CCCCCC !important;
+}
+
+.active {
+    border-bottom-color: black !important;
 }

@@ -8,7 +8,7 @@ from flask import (
 )
 from datetime import datetime
 import pandas as pd
-from sqlalchemy import select, desc
+from sqlalchemy import select, desc, func, extract
 
 from doppelkopf.extensions import db
 
@@ -114,4 +114,22 @@ def games():
         players=players,
         games=games,
         days_for_delete=7
+    )
+
+@ui_basis.route('/ranking', methods=['GET'])
+def ranking():
+    result = db.session.query(
+        func.min(extract('year', Game.date)).label('year_min'),
+        func.max(extract('year', Game.date)).label('year_max')
+    ).one()
+    years = list(range(int(result.year_max), int(result.year_min)-1, -1))
+    player_statistics = {year: {} for year in years}
+    player_statistics['ewig'] = player_rm.get_statistics_players()
+    for year in years:
+        player_statistics[year] = player_rm.get_statistics_players_by_year(year)
+    print(player_statistics[2020][1]['total_batches'])
+    return render_template(
+        'ranking.html',
+        player_statistics=player_statistics,
+        years=years
     )
