@@ -4,7 +4,7 @@
     {{ super() }}
     <div class="container mt-2">
         <h4 class="mb-2 pb-2" style="border-bottom: #CCCCCC solid 1px;">Spiel hinzufügen</h6>
-        <form id="add_game_form" method="POST" action="{{url_for("api_game.save_game")}}" data-toggle="validator" role="form">
+        <form class="mb-4 mt-4" id="add_game_form" method="POST" action="{{url_for("api_game.save_game")}}" data-toggle="validator" role="form">
             <div class="form-group row">
                 <div class="form-group col-8">
                     <label for="date" class="col-form-label">Datum</label>
