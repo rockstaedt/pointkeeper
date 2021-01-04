@@ -10,11 +10,18 @@
     <!-- Own Styles -->
     <link href="{{url_for('static', filename='css/main.css')}}" rel="stylesheet">
 
+    {% block styles %}
+    {% endblock styles %}
+
 </head>
 <body class="body-dark">
 
     {% block content%}
     {% endblock content%}
+
+    <div class="row justify-content-center align-items-center" style="color: transparent;">
+        Footer
+    </div>
 
     <!-- Boostrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
