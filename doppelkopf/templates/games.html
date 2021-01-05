@@ -3,10 +3,10 @@
 {% block content %}
     {{ super() }}
     <div class="container mt-2">
-        <div class="mb-2 pb-2 d-flex justify-content-between" style="border-bottom: #CCCCCC solid 1px;">
+        <div class="mb-2 pb-2 d-flex justify-content-between align-items-center" style="border-bottom: #CCCCCC solid 1px;">
             <h4>Spielliste</h4>
-            <a role="button" href="{{url_for("ui_forms.add_game")}}">
-                <i class="far fa-plus-square fa-2x" style="color: #27d192;"></i>
+            <a role="button" href="{{url_for("ui_forms.add_game", counter = 4)}}">
+                <i class="far fa-plus-square fa-2x" style="color: #27d193ea;"></i>
             </a>
         </div>
         <div class="table-responsive mt-4">
@@ -52,7 +52,7 @@
             </table>
         </div>
         <div class="row justify-content-center align-items-center">
-            <a role="button" class="btn btn-primary" href="{{url_for("ui_forms.add_game")}}">Spiel hinzufügen</a>
+            <a role="button" class="btn btn-primary" href="{{url_for("ui_forms.add_game", counter = 4)}}">Spiel hinzufügen</a>
         </div>
     </div>
 {% endblock content %}
