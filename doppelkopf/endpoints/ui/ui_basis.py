@@ -128,7 +128,6 @@ def ranking():
     player_statistics['ewig'] = player_rm.get_statistics_players()
     for year in years:
         player_statistics[year] = player_rm.get_statistics_players_by_year(year)
-    print(player_statistics[2020][1]['total_batches'])
     return render_template(
         'ranking.html',
         player_statistics=player_statistics,
