@@ -22,7 +22,7 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="id_player_{{i}}">Spieler {{i}}</label>
                             <select class="custom-select" id="id_player_{{i}}" name="id_player_{{i}}" required>
-                                <option selected value="">Wähle...</option>
+                                <option value="">Wähle...</option>
                                 {% for player in players %}
                                     <option value="{{player.id}}">{{player.name}}</option>
                                 {% endfor %}
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="form-group col-4">
-                        <input type="number" class="form-control" id="points_player_{{i}}" name="points_player_{{i}}" required>
+                        <input type="number" class="form-control points" id="points_player_{{i}}" name="points_player_{{i}}" required>
                     </div>
                 </div>
             {% endfor %}
@@ -41,17 +41,29 @@
                 <span class="ml-2">Spieler hinzufügen</span>
             </div>
             <div class="form-group row justify-content-center align-items-center">
-                <button type="submit" class="btn btn-primary">Speichern</button>
+                <button type="submit" class="btn btn-primary" onclick="check_entries()">Speichern</button>
             </div>
         </form>
     </div>
 {% endblock content %}
 
 {% block scripts %}
+    <script src="{{url_for('static', filename='js/checks.js')}}"></script>
     <script>
         function add_player(){
             counter_player = $('select').length + 1;
             window.location.href = "{{url_for('ui_forms.add_game', counter = counter_player)}}" + counter_player
+        }
+
+        function check_entries(){
+            if(!(check_form())){
+                event.preventDefault()
+                correct_points = check_points()
+                correct_players = check_player_names()
+                if (correct_points & correct_players){
+                    $('#add_game_form').submit()
+                }
+            }
         }
     </script>
 {% endblock scripts %}
