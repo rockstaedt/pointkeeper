@@ -35,7 +35,8 @@ def update_game(game_id):
         result_dic[result.player_id] = {
             'index': i+1,
             'points': result.points,
-            'name': Player.query.get(result.player_id).name
+            'name': Player.query.get(result.player_id).name,
+            'player_id': result.player_id
         }
     game = Game.query.get(game_id)
     return render_template(
