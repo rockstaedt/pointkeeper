@@ -20,3 +20,10 @@ class Result(db.Model):
 
     game = relationship(Game)
     player = relationship(Player)
+
+    def __repr__(self):
+        return (
+            f'Result(Player ID: {self.player_id}, '
+            + f'Game ID: {self.game_id}, '
+            + f'Points: {self.points})'
+        )

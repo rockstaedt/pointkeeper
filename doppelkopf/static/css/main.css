@@ -1,0 +1,59 @@
+body, html{
+    height:100%;
+}
+
+img {
+    height: 95%;
+}
+
+hr {
+    border-color: #CCCCCC;
+}
+
+th {
+    border-top: none !important;
+}
+
+.body-dark {
+    background-color: black;
+    color: #CCCCCC;
+}
+
+.col-start {
+    height: 70%;
+}
+
+.row-start-pic {
+    height: 45%;;
+}
+
+.row-start-header {
+    height: 10%;
+}
+
+.fa {
+    color: #CCCCCC;
+}
+
+.user-pic {
+    height: 100px;
+    width: 100px;
+}
+
+.table {
+    color: #CCCCCC;
+}
+
+.btn-app-size {
+    width: 150px;
+}
+
+.nav-link {
+    color: #CCCCCC !important;
+    background-color: black !important;
+    border-bottom-color: #CCCCCC !important;
+}
+
+.active {
+    border-bottom-color: black !important;
+}

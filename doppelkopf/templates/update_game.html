@@ -1,0 +1,68 @@
+{% extends "layouts/layout_app.html" %}
+
+{% block content %}
+    {{ super() }}
+    <div class="container mt-2">
+        <h4 class="mb-2 pb-2" style="border-bottom: #CCCCCC solid 1px;">Spiel aktualisieren</h6>
+        <form class="mb-4 mt-4" id="update_game_form" method="POST" action="{{url_for("api_game.update_game", game_id=game_id)}}" data-toggle="validator" role="form">
+            <div class="form-group row">
+                <div class="form-group col-8">
+                    <label for="date" class="col-form-label">Datum</label>
+                    <input type="text" class="form-control" id="date" name="date" placeholder="{{ game_date }}" value="{{ game_date }}" onfocus="(this.type='date')" onblur="(this.type='text')" required>
+                </div>
+                <div class="form-group col-4">
+                    <label for="games" class="col-form-label">Partien</label>
+                    <input type="number" class="form-control" id="games" name="games" placeholder="{{ game_batches }}" value="{{ game_batches }}" required>
+                </div>
+            </div>
+            <h6 class="mb-4 pb-2" style="border-bottom: #CCCCCC solid 1px;">Punkte</h6>
+            {% for player_id, values in result_dic.items() %}
+                <div class="form-group row">
+                    <div class="form-group col-8">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="id_player_{{loop.index}}">Spieler {{values['index']}}</label>
+                            <input type="text" class="form-control" name="id_player_{{loop.index}}" id="id_player_{{loop.index}}" value="{{values['player_id']}}" hidden>
+                            <input type="text" class="form-control" name="name_player_{{loop.index}}" id="name_player_{{loop.index}}" value="{{values['name']}}" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group col-4">
+                        <input type="number" class="form-control points" id="points_player_{{loop.index}}" name="points_player_{{loop.index}}" placeholder="{{values['points']}}" value="{{values['points']}}" required>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="form-group row justify-content-center align-items-center">
+                <button type="submit" class="btn btn-primary btn-app-size" onclick="check_entries()">Aktualisieren</button>
+            </div>
+            <div class="form-group row justify-content-center align-items-center">
+                <a role="button" class="btn btn-danger btn-app-size" id="{{ game_id }}" onClick="enable_delete_alert(this.id)">Löschen</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{{url_for('static', filename='js/checks.js')}}"></script>
+    <script src="{{url_for('static', filename='js/delete_alert.js')}}"></script>
+    <script>
+        function enable_delete_alert(game_id){
+
+            event.preventDefault();
+            days_for_delete = Number("{{days_for_delete}}");
+            get_game_date_url = "{{url_for('api_game.get_game_date', game_id=id)}}" + game_id;
+            delete_game_url = "{{url_for('api_game.delete_game', game_id=id)}}" + game_id;
+            show_delete_alert(get_game_date_url, delete_game_url, days_for_delete)
+
+        };
+
+        function check_entries(){
+            if(!(check_form())){
+                event.preventDefault()
+                correct_points = check_points()
+                // no need to check player names because they cannot be changed
+                if (correct_points & correct_players){
+                    $('#update_game_form').submit()
+                }
+            }
+        }
+    </script>
+{% endblock scripts %}

@@ -1,0 +1,135 @@
+{% extends "layouts/layout_app.html" %}
+
+{% block content %}
+    {{ super() }}
+    <div class="container mt-2">
+        <div class="mb-2 pb-2 d-flex justify-content-between align-items-center" style="border-bottom: #CCCCCC solid 1px;">
+            <h4>Spielliste</h4>
+            <a role="button" href="{{url_for("ui_forms.add_game", counter = 4)}}">
+                <i class="far fa-plus-square fa-2x" style="color: #27d193ea;"></i>
+            </a>
+        </div>
+        <div class="table-responsive mt-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th id="date_header">Datum</th>
+                        <th id="games_header">Partien</th>
+                        {% for player in players %}
+                            <th id="{{player.name}}"> {{ player.name }} </th>
+                        {% endfor %}
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in games %}
+                        <tr id="game_entries_{{game.id}}">
+                            <td class="caption" id="date" data-label="Datum" headers="date_header">{{ game.date.strftime("%d.%m.%Y") }}</td>
+                            <td class="caption" id="games" data-label="Partien" haeders="games_header">{{ game.played_matches }}</td>
+                            {% for player in players %}
+                                <td class="normal" id="points_{{player.name}}_{{player.id}}" data-label="{{player.name}}" headers="{{player.name}}">
+                                    {% if game.id in player_results and player.name in player_results[game.id] %}
+                                        {{player_results[game.id][player.name]}}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            <td class="button">
+                                <a role="button" href="{{url_for('ui_forms.update_game', game_id=game.id)}}">
+                                    <i class="far fa-edit" style="color: #27d192;"></i>
+                                </a>
+                            </td>
+                            <td class="button">
+                                <a role="button" class="delete-button">
+                                    <i class="far fa-trash-alt" id="{{ game.id }}" onClick="enable_delete_alert(this.id)" style="color: Tomato;"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <a role="button" class="btn btn-primary" href="{{url_for("ui_forms.add_game", counter = 4)}}">Spiel hinzufügen</a>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block styles %}
+    <style>
+
+        @media screen and (max-width: 800px) {
+
+
+            table thead {
+                display: none;
+            }
+
+            table tr {
+                margin-bottom: 20px;
+                display: block;
+                border: 2px solid #CCCCCC;
+                border-radius: 10px;
+            }
+
+            table td {
+                display: block;
+                text-align: right;
+                border-bottom: none;
+            }
+
+            table td.button {
+                text-align: center;
+            }
+
+            table td.caption {
+                font-weight: bold;
+                font-style: italic;
+                font-size: 1.1rem;
+            }
+
+            table td.caption:before {
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+            }
+
+            table td.normal:before {
+                content: attr(data-label);
+                float: left;
+                font-weight: normal;
+            }
+
+
+        }
+    </style>
+{% endblock styles %}
+
+{% block scripts %}
+    <script src="{{url_for('static', filename='js/delete_alert.js')}}"></script>
+
+    <script>
+        function enable_delete_alert(game_id){
+
+            event.preventDefault();
+
+            days_for_delete = Number("{{days_for_delete}}");
+
+            get_game_date_url = "{{url_for('api_game.get_game_date', game_id=game_id)}}" + game_id;
+
+            delete_game_url = "{{url_for('api_game.delete_game', game_id=game_id)}}" + game_id;
+
+            show_delete_alert(get_game_date_url, delete_game_url, days_for_delete)
+
+        };
+
+        $(document).ready(function() {
+            // show the alert
+            setTimeout(function() {
+                $(".alert").alert('close');
+            }, 2000);
+        });
+    </script>
+{% endblock scripts %}

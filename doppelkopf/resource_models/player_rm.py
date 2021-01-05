@@ -1,5 +1,6 @@
 from typing import Dict
-from sqlalchemy import func
+from sqlalchemy import func, extract, desc
+from collections import OrderedDict
 
 from doppelkopf.extensions import db
 
@@ -36,12 +37,38 @@ def update_game_statistics(player_id):
         player.ranking = 999
         player.points_game_ration = 0
 
-def get_game_statistic_player(player_id) -> Dict:
-    player = Player.query.get(player_id)
-    game_statistics = {
-        "total_points": player.total_points,
-        "total_games": player.total_games,
-        "points_game_ration": round(player.points_game_ration, 2),
-        "ranking": player.ranking
-    }
-    return game_statistics
+def get_statistics_players() -> OrderedDict:
+    results = db.session.query(Player).order_by(Player.ranking).all()
+    result_dic = OrderedDict()
+    for i, result in enumerate(results):
+        result_dic[i] = {
+            'player': result,
+            "total_points": result.total_points,
+            "total_batches": result.total_games,
+            "ratio": round(result.points_game_ration, 2),
+        }
+    return result_dic
+
+def get_statistics_players_by_year(year:int) -> OrderedDict:
+    results = db.session.query(
+        Result.player_id,
+        func.sum(Result.points).label('total_points'),
+        func.sum(Game.played_matches).label('total_batches')
+    ).join(
+        Game
+    ).filter(
+        extract('year', Game.date) == year
+    ).group_by(
+        Result.player_id
+    ).order_by(
+        desc('total_points')
+    ).all()
+    result_dic = OrderedDict()
+    for i, result in enumerate(results):
+        result_dic[i+1] = {
+            'player': Player.query.get(result.player_id),
+            'total_points': result.total_points,
+            'total_batches': result.total_batches,
+            'ratio': round(result.total_points/result.total_batches, 2)
+        }
+    return result_dic
