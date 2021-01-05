@@ -20,18 +20,33 @@ api_game = Blueprint('api_game', __name__, url_prefix='/api/v1/games/')
 
 @api_game.route('save_game', methods=['POST'])
 def save_game():
-    # create game and add to database
+    # Safari on Mac does not support date input type. That is why, dates
+    # in fomat DD.MM.YYYY are caught.
+    if '.' in request.form['date']:
+        # input type: text
+        game_date = datetime.strptime(
+            request.form['date'],
+            '%d.%m.%Y'
+        )
+    else:
+        # input type: date
+        game_date = datetime.strptime(
+            request.form['date'],
+            '%Y-%m-%d'
+        )
+    # create game and add it to database
     played_game = Game(
-        date = datetime.strptime(request.form['date'], '%Y-%m-%d'),
+        date = game_date,
         played_matches = request.form['games']
     )
     db.session.add(played_game)
-
-    # create results and add to database
-    for i in range(1,5):
-        player_id = request.form[f'id_player{i}']
+    # get counter for players
+    counter_player = int(list(request.form.keys())[-1].split('_')[-1])
+    # create results for all players and add them to the database
+    for i in range(1, counter_player+1):
+        player_id = request.form[f'id_player_{i}']
         player = Player.query.get(player_id)
-        player_points = request.form[f'points_player{i}']
+        player_points = request.form[f'points_player_{i}']
         # create result for player
         result = Result(
             points = player_points,
@@ -43,7 +58,7 @@ def save_game():
         player_rm.update_game_statistics(player_id)
     db.session.commit()
     flash('Spiel gespeichert!', 'success')
-    return redirect('/home')
+    return redirect('/games')
 
 
 @api_game.route('update_game/<game_id>', methods=['POST'])
