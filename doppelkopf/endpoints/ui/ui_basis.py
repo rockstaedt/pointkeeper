@@ -7,7 +7,6 @@ from flask import (
     redirect
 )
 from datetime import datetime
-import pandas as pd
 from sqlalchemy import select, desc, func, extract
 import os
 
