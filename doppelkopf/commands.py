@@ -3,6 +3,7 @@ from flask.cli import with_appcontext
 
 from .extensions import db
 from doppelkopf.models import Player
+from doppelkopf.models import Table
 
 @click.command(name='create_tables')
 @with_appcontext
@@ -10,19 +11,29 @@ def create_tables():
     db.create_all()
 
     eric = Player(
-        name = "Eric"
+        name = "Eric",
+        table_id = 1,
+        image_file = 'Eric.png'
     )
     lucas = Player(
-        name = "Lucas"
+        name = "Lucas",
+        table_id = 1,
+        image_file = 'Lucas.png'
     )
     marco = Player(
-        name = "Marco"
+        name = "Marco",
+        table_id = 1,
+        image_file = 'Marco.png'
     )
     nils = Player(
-        name = "Nils"
+        name = "Nils",
+        table_id = 1,
+        image_file = 'Nils.png'
     )
     peer = Player(
-        name = "Peer"
+        name = "Peer",
+        table_id = 1,
+        image_file = 'Peer.png'
     )
 
     db.session.add(eric)
@@ -30,5 +41,12 @@ def create_tables():
     db.session.add(marco)
     db.session.add(nils)
     db.session.add(peer)
+
+    table = Table(
+        name = "Cooking Like OG",
+        pin = "1234"
+    )
+
+    db.session.add(table)
 
     db.session.commit()
