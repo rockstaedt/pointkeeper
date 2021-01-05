@@ -25,9 +25,6 @@ ui_basis = Blueprint('ui_basis', __name__)
 
 
 @ui_basis.route('/')
-def start():
-    return render_template('start.html')
-
 @ui_basis.route('/home')
 def home():
     # get players
