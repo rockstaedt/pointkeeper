@@ -9,6 +9,7 @@ from flask import (
 from datetime import datetime
 import pandas as pd
 from sqlalchemy import select, desc, func, extract
+import os
 
 from doppelkopf.extensions import db
 
@@ -113,7 +114,7 @@ def games():
         player_results=player_results,
         players=players,
         games=games,
-        days_for_delete=7
+        days_for_delete=os.environ['DELETE_DAYS']
     )
 
 @ui_basis.route('/ranking', methods=['GET'])

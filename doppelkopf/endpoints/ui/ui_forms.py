@@ -9,6 +9,7 @@ from flask import (
 from datetime import datetime
 import pandas as pd
 from sqlalchemy import select
+import os
 
 from doppelkopf.extensions import db
 
@@ -45,5 +46,5 @@ def update_game(game_id):
         game_date=game.date.strftime('%d.%m.%Y'),
         game_batches=game.played_matches,
         result_dic=result_dic,
-        days_for_delete=7
+        days_for_delete=os.environ['DELETE_DAYS']
     )
