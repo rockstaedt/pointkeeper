@@ -173,7 +173,7 @@
                     </div>
                 </div>
                 <h6 style="border-bottom: #212529 solid 1px; padding-bottom: 5px; margin-bottom: 30px;margin-top: 20px;">Punkte</h6>
-                {% for i in range(1, 5)  %}
+                {% for i in range(1, 6)  %}
                     <div class="form-group row">
                         <div class="form-group col-sm-8">
                             <div class="input-group-prepend">
@@ -226,7 +226,7 @@
                     </div>
                 </div>
                 <h6 style="border-bottom: #212529 solid 1px; padding-bottom: 5px; margin-bottom: 30px;margin-top: 20px;">Punkte</h6>
-                {% for i in range(1, 5)  %}
+                {% for i in range(1, 6)  %}
                     <div class="form-group row">
                         <div class="input-group col-sm-12">
                             <div class="input-group-prepend">
@@ -541,13 +541,11 @@
                 date = new Date(parseInt(date_parts[2]), parseInt(date_parts[1])-1, parseInt(date_parts[0]), 2);
                 $('#update_' + this.id).attr("value", date.toISOString().substring(0,10));
             }else if (this.id.substring(0,6) == "points"){
-                if(this.innerText != "-"){
-                    $("#update_name_player" + player_number).text(this.headers);
-                    $('#update_points_player' + player_number).attr("value", this.innerText);
-                    player_id = this.id.split("_")[2]
-                    $('#update_id_player' + player_number).attr("value", player_id);
-                    player_number = player_number + 1;
-                };
+                $("#update_name_player" + player_number).text(this.headers);
+                $('#update_points_player' + player_number).attr("value", this.innerText);
+                player_id = this.id.split("_")[2]
+                $('#update_id_player' + player_number).attr("value", player_id);
+                player_number = player_number + 1;
             };
         });
         $("#game_id").attr("value", game_id);
