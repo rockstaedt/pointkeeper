@@ -19,6 +19,8 @@ class Player(db.Model):
     total_points = db.Column(db.Integer, default=0)
     points_game_ration = db.Column(db.Float, default=0.0)
     table_id = db.Column(Integer, ForeignKey("tables.id"), nullable=False)
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+
 
     table = relationship(Table)
 
