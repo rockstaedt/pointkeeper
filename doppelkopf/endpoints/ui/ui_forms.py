@@ -21,10 +21,10 @@ from doppelkopf.resource_models import (
 
 ui_forms = Blueprint('ui_forms', __name__)
 
-@ui_forms.route('/add_game', methods=['GET'])
-def add_game():
+@ui_forms.route('/add_game/players/<counter>', methods=['GET'])
+def add_game(counter):
     players = Player.query.all()
-    return render_template('add_game.html', players=players)
+    return render_template('add_game.html', players=players, counter=int(counter))
 
 
 @ui_forms.route('/update_game/<game_id>', methods=['GET'])
