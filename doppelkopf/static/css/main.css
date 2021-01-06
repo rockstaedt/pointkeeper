@@ -71,12 +71,12 @@ th {
 }
 
 .trophy {
-    width: 40%;
+    width: 10px;
 }
 
 .point_value {
     text-align: right;
-    width: 60%;
+    width: 35px;
 }
 
 .no_points {
@@ -85,5 +85,5 @@ th {
 
 .trophy-point {
     display: flex;
-    justify-content: space-evenly !important;
+    justify-content: center !important;
 }
