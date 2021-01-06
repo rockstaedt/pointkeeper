@@ -19,7 +19,7 @@
                         <th id="date_header">Datum</th>
                         <th id="games_header">Partien</th>
                         {% for player in players %}
-                            <th id="{{player.name}}"> {{ player.name }} </th>
+                            <th id="{{player.name}}"> {{-player.name-}} </th>
                         {% endfor %}
                         <th></th>
                         <th></th>
@@ -28,15 +28,24 @@
                 <tbody>
                     {% for game in games %}
                         <tr id="game_entries_{{game.id}}">
-                            <td class="caption" id="date" data-label="Datum" headers="date_header">{{ game.date.strftime("%d.%m.%Y") }}</td>
-                            <td class="caption" id="games" data-label="Partien" haeders="games_header">{{ game.played_matches }}</td>
+                            <td class="caption" id="date_{{game.id}}" data-label="Datum" headers="date_header">{{ game.date.strftime("%d.%m.%Y") }}</td>
+                            <td class="caption" id="games_{{game.id}}" data-label="Partien" haeders="games_header" style="text-align: center;">{{ game.played_matches }}</td>
                             {% for player in players %}
-                                <td class="normal" id="points_{{player.name}}_{{player.id}}" data-label="{{player.name}}" headers="{{player.name}}">
-                                    {% if game.id in player_results and player.name in player_results[game.id] %}
-                                        {{player_results[game.id][player.name]}}
-                                    {% else %}
-                                        -
-                                    {% endif %}
+                                <td class="normal" id="points_{{player.name}}_{{player.id}}_game_{{game.id}}" data-label="{{player.name}}" headers="{{player.name}}">
+                                    <div class="trophy-point">
+                                        {% if game.id in player_results and player.name in player_results[game.id] %}
+                                            <span class="trophy">
+
+                                            </span>
+                                            <span class="point_value">
+                                                {{-player_results[game.id][player.name]-}}
+                                            </span>
+                                        {% else %}
+                                            <span class="no_points">
+                                                -
+                                            </span>
+                                        {% endif %}
+                                    </div>
                                 </td>
                             {% endfor %}
                             <td class="button">
@@ -63,8 +72,24 @@
 {% block styles %}
     <style>
 
-        @media screen and (max-width: 700px) {
+        th {
+            text-align: center;
+        }
 
+        @media screen and (max-width: 650px) {
+
+            .caption {
+                text-align: right !important;
+            }
+
+            .point_value {
+                width: 40px !important;
+            }
+
+            .trophy-point {
+                display: flex;
+                justify-content: flex-end !important;
+            }
 
             table thead {
                 display: none;
@@ -75,6 +100,7 @@
                 display: block;
                 border: 2px solid #CCCCCC;
                 border-radius: 10px;
+                text-align: center;
             }
 
             table td {
@@ -93,6 +119,10 @@
                 font-size: 1.1rem;
             }
 
+            table tr td:first-child {
+                border-top: none !important;
+            }
+
             table td.caption:before {
                 content: attr(data-label);
                 float: left;
@@ -104,9 +134,8 @@
                 float: left;
                 font-weight: normal;
             }
-
-
         }
+
     </style>
 {% endblock styles %}
 
@@ -114,6 +143,13 @@
     <script src="{{url_for('static', filename='js/delete_alert.js')}}"></script>
 
     <script>
+
+        var place_to_class = {
+            1: 'first_place',
+            2: 'second_place',
+            3: 'third_place'
+        }
+
         function enable_delete_alert(game_id){
 
             event.preventDefault();
@@ -125,6 +161,56 @@
             delete_game_url = "{{url_for('api_game.delete_game', game_id=game_id)}}" + game_id;
 
             show_delete_alert(get_game_date_url, delete_game_url, days_for_delete)
+
+        };
+
+        function sort_object(obj) {
+            items = Object.keys(obj).map(function(key) {
+                return [key, obj[key]];
+            });
+            items.sort(function(first, second) {
+                return second[1] - first[1];
+            });
+            sorted_obj={}
+            $.each(items, function(k, v) {
+                use_key = v[0]
+                use_value = v[1]
+                sorted_obj[use_key] = use_value
+            })
+            return (sorted_obj)
+        };
+
+        function insert_trophies() {
+            // loop through all table rows
+            $('.table tbody tr').each(function(){
+                // create dictionary
+                var td_id_to_points = {}
+                // loop through all table data entries
+                $(this.children).each(function() {
+                    // check for table data points
+                    if ($(this).hasClass('normal')){
+                        // check if player has points
+                        if (this.innerText != "-"){
+                            // write value in dic
+                            td_id_to_points[this.id] = Number(this.innerText)
+                        }
+                    }
+                });
+                // sort point values
+                var td_id_to_points_sorted = sort_object(td_id_to_points);
+                var keys_td_id_to_points_sorted = Object.keys(td_id_to_points_sorted);
+                var place = 1;
+                for (key of keys_td_id_to_points_sorted){
+                    if (place <= 3){
+                        // prepend trophy to td
+                        $('#' + key + ' div :first-child').append("<i class='fas fa-trophy fa-xs'></i>");
+                        $('#' + key + ' div :first-child').addClass(place_to_class[place])
+                    } else {
+                        break;
+                    }
+                    place ++;
+                }
+            });
 
         };
 
@@ -141,6 +227,8 @@
                     icon: "info"
                 });
             });
+
+            insert_trophies();
         });
     </script>
 {% endblock scripts %}

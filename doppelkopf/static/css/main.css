@@ -57,3 +57,33 @@ th {
 .active {
     border-bottom-color: black !important;
 }
+
+.first_place {
+    color: gold;
+}
+
+.second_place {
+    color: silver;
+}
+
+.third_place {
+    color: #CD7F32;
+}
+
+.trophy {
+    width: 40%;
+}
+
+.point_value {
+    text-align: right;
+    width: 60%;
+}
+
+.no_points {
+    text-align: center;
+}
+
+.trophy-point {
+    display: flex;
+    justify-content: space-evenly !important;
+}
