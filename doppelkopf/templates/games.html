@@ -4,7 +4,10 @@
     {{ super() }}
     <div class="container mt-2">
         <div class="mb-2 pb-2 d-flex justify-content-between align-items-center" style="border-bottom: #CCCCCC solid 1px;">
-            <h4>Spielliste</h4>
+            <div class="d-flex align-items-center justify-content-start">
+                <h4 class="mb-0">Spielliste</h4>
+                <span class="ml-3"><i id="info_button" class="fas fa-info" style="color: grey;"></i></span>
+            </div>
             <a role="button" href="{{url_for("ui_forms.add_game", counter = 4)}}">
                 <i class="far fa-plus-square fa-2x" style="color: #27d193ea;"></i>
             </a>
@@ -130,6 +133,14 @@
             setTimeout(function() {
                 $(".alert").alert('close');
             }, 2000);
+
+            // show info alert for table
+            $('#info_button').click(function() {
+                swal({
+                    text: "Eine Tabelle wird angezeigt, wenn du dein Gerät im Querformat hältst.",
+                    icon: "info"
+                });
+            });
         });
     </script>
 {% endblock scripts %}
