@@ -189,12 +189,20 @@
                 $(this.children).each(function() {
                     // check for table data points
                     if ($(this).hasClass('normal')){
-                        // check if player has points
-                        if (this.innerText != "-"){
-                            // write value in dic
-                            td_id_to_points[this.id] = Number(this.innerText)
-                        }
-                    }
+                        // save id of td for later access
+                        id_td = this.id
+                        // td contains a div and in this div, the point values
+                        // are written, loop over these spans
+                        $($(this.children[0]).children()).each(function() {
+                            if ($(this).hasClass('point_value')){
+                                // check if player has points
+                                if (this.innerText != "-"){
+                                    // write value in dic
+                                    td_id_to_points[id_td] = Number(this.innerText)
+                                };
+                            };
+                        });
+                    };
                 });
                 // sort point values
                 var td_id_to_points_sorted = sort_object(td_id_to_points);
@@ -202,7 +210,7 @@
                 var place = 1;
                 for (key of keys_td_id_to_points_sorted){
                     if (place <= 3){
-                        // prepend trophy to td
+                        // prepend trophy to td with if of key
                         $('#' + key + ' div :first-child').append("<i class='fas fa-trophy fa-xs'></i>");
                         $('#' + key + ' div :first-child').addClass(place_to_class[place])
                     } else {
