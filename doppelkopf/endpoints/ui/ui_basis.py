@@ -9,6 +9,7 @@ from flask import (
 from datetime import datetime
 from sqlalchemy import select, desc, func, extract
 import os
+import json
 
 from doppelkopf.extensions import db
 
@@ -19,6 +20,9 @@ from doppelkopf.resource_models import (
     player_rm,
     game_rm
 )
+
+with open('config.json') as config_file:
+    config = json.load(config_file)
 
 ui_basis = Blueprint('ui_basis', __name__)
 
@@ -82,7 +86,7 @@ def games():
         player_results=player_results,
         players=players,
         games=games,
-        days_for_delete=os.environ['DELETE_DAYS']
+        days_for_delete=config.get('DELETE_DAYS')
     )
 
 @ui_basis.route('/ranking', methods=['GET'])
