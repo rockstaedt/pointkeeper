@@ -12,11 +12,13 @@ from .endpoints import (
     ui_forms
 )
 
-def create_app(config_file = 'settings.py'):
+from doppelkopf.config import Config
+
+
+def create_app(config_class=Config):
 
     app = Flask(__name__)
-
-    app.config.from_pyfile(config_file)
+    app.config.from_object(Config)
 
     db.init_app(app)
 
