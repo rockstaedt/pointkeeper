@@ -105,3 +105,8 @@ def ranking():
         player_statistics=player_statistics,
         years=years
     )
+
+
+@ui_basis.route('/analyse', methods=['GET'])
+def analyse():
+    return render_template('analyse.html')
