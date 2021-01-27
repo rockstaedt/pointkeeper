@@ -1,0 +1,26 @@
+name: CI
+
+# Controls when the action will run.
+on:
+  push:
+    branches: [ dev-server ]
+
+    - name: Copy repository contents via scp...
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ secrets.SERVER_IP }}
+        USERNAME: ${{ secrets.SERVER_USERNAME }}
+        PORT: ${{ secrets.SERVER_PORT }}
+        KEY: ${{ secrets.SERVER_SSHKEY }}
+      with:
+        source: "."
+        target: ${{ secrets.PROJECT_PATH }}
+
+    - name: Reload supervisor...
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        USERNAME: ${{ secrets.SERVER_USERNAME }}
+        PORT: ${{ secrets.SERVER_PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: sudo supervisorctl reload
