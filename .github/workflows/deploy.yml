@@ -1,10 +1,14 @@
-name: CI
+name: Deploy
 
 # Controls when the action will run.
 on:
   push:
     branches: [ dev-server ]
 
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
     - name: Copy repository contents via scp...
       uses: appleboy/scp-action@master
       env:
