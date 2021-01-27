@@ -2,8 +2,8 @@ import click
 from flask.cli import with_appcontext
 
 from .extensions import db
-from doppelkopf.models import Player
-from doppelkopf.models import Table
+from pointkeeper.models import Player
+from pointkeeper.models import Table
 
 @click.command(name='create_tables')
 @with_appcontext

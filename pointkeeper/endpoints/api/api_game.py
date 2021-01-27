@@ -9,11 +9,11 @@ from flask import (
 from datetime import datetime
 
 
-from doppelkopf.extensions import db
+from pointkeeper.extensions import db
 
-from doppelkopf.models import Player, Game, Result
+from pointkeeper.models import Player, Game, Result
 
-from doppelkopf.resource_models import player_rm
+from pointkeeper.resource_models import player_rm
 
 api_game = Blueprint('api_game', __name__, url_prefix='/api/v1/games/')
 

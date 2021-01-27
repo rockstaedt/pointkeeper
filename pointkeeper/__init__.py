@@ -12,7 +12,7 @@ from .endpoints import (
     ui_forms
 )
 
-from doppelkopf.config import Config
+from pointkeeper.config import Config
 
 
 def create_app(config_class=Config):

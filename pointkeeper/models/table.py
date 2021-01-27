@@ -5,7 +5,7 @@ from sqlalchemy import (
 )
 from datetime import datetime
 
-from doppelkopf.extensions import db
+from pointkeeper.extensions import db
 
 class Table(db.Model):
     __tablename__ = "tables"

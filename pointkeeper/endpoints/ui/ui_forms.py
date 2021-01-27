@@ -10,11 +10,11 @@ from datetime import datetime
 from sqlalchemy import select
 import os
 
-from doppelkopf.extensions import db
+from pointkeeper.extensions import db
 
-from doppelkopf.models import Player, Game, Result
+from pointkeeper.models import Player, Game, Result
 
-from doppelkopf.resource_models import (
+from pointkeeper.resource_models import (
     result_rm,
     player_rm
 )

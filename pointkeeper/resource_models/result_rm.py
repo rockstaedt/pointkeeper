@@ -1,9 +1,9 @@
 from sqlalchemy import func, desc
 from typing import Dict
 
-from doppelkopf.extensions import db
+from pointkeeper.extensions import db
 
-from doppelkopf.models import Player, Game, Result
+from pointkeeper.models import Player, Game, Result
 
 def get_player_results(game_id: int):
     results = db.session.query(

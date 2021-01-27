@@ -2,9 +2,9 @@ from flask import Blueprint
 from sqlalchemy import desc, asc, func
 from datetime import datetime
 
-from doppelkopf.extensions import db
+from pointkeeper.extensions import db
 
-from doppelkopf.models import Player, Game, Result
+from pointkeeper.models import Player, Game, Result
 
 api_analysis = Blueprint('api_analysis', __name__)
 

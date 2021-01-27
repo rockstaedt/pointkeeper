@@ -6,10 +6,10 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from typing import Dict
 
-from doppelkopf.extensions import db
+from pointkeeper.extensions import db
 
-from doppelkopf.models.game import Game
-from doppelkopf.models.player import Player
+from pointkeeper.models.game import Game
+from pointkeeper.models.player import Player
 
 class Result(db.Model):
     __tablename__ = "results"

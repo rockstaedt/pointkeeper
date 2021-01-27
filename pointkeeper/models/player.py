@@ -6,9 +6,9 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
-from doppelkopf.extensions import db
+from pointkeeper.extensions import db
 
-from doppelkopf.models.table import Table
+from pointkeeper.models.table import Table
 
 class Player(db.Model):
     __tablename__ = "players"

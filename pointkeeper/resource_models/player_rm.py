@@ -2,11 +2,11 @@ from typing import Dict
 from sqlalchemy import func, extract, desc
 from collections import OrderedDict
 
-from doppelkopf.extensions import db
+from pointkeeper.extensions import db
 
-from doppelkopf.models import Player, Game, Result
+from pointkeeper.models import Player, Game, Result
 
-from doppelkopf.resource_models import result_rm, game_rm
+from pointkeeper.resource_models import result_rm, game_rm
 
 def get_total_games_player(player_id) -> int:
     results = db.session.query(

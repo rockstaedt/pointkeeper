@@ -8,9 +8,9 @@ from flask import (
 )
 from datetime import datetime
 
-from doppelkopf.extensions import db
+from pointkeeper.extensions import db
 
-from doppelkopf.models import Player, Game, Result
+from pointkeeper.models import Player, Game, Result
 
 api_ranking = Blueprint('api_ranking', __name__)
 
