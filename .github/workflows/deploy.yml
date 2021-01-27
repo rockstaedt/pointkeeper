@@ -16,4 +16,4 @@ jobs:
               host: ${{ secrets.SERVER_IP }}
               username: ${{ secrets.SERVER_USERNAME }}
               key: ${{ secrets.SERVER_SSHKEY }}
-              script: cd ${{ secrets.PROJECT_PATH }} && git pull && sudo supervisorctl reload
+              script: cd ${{ secrets.PROJECT_PATH }} && git pull
