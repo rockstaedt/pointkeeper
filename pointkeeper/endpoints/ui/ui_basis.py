@@ -1,24 +1,17 @@
 from flask import (
     Blueprint,
     render_template,
-    request,
-    flash,
-    url_for,
-    redirect
 )
-from datetime import datetime
-from sqlalchemy import select, desc, func, extract
-import os
+from sqlalchemy import desc, func, extract
 import json
 
 from pointkeeper.extensions import db
 
-from pointkeeper.models import Player, Game, Result
+from pointkeeper.models import Player, Game
 
 from pointkeeper.resource_models import (
     result_rm,
-    player_rm,
-    game_rm
+    player_rm
 )
 
 with open('config.json') as config_file:
@@ -33,7 +26,7 @@ def home():
     # get players
     players = Player.query.order_by(Player.name).all()
     # get counter for games
-    games= Game.query.order_by(Game.date).all()
+    games = Game.query.order_by(Game.date).all()
     games_count = len(games)
     # get player with most points
     player_most_points = Player.query.order_by(
@@ -72,6 +65,7 @@ def home():
         )
     )
 
+
 @ui_basis.route('/games', methods=['GET'])
 def games():
     games = Game.query.order_by(Game.date).all()
@@ -79,7 +73,7 @@ def games():
     player_results = {}
     for game in games:
         player_results[game.id] = result_rm.get_player_results(
-            game_id = game.id
+            game_id=game.id
         )
     return render_template(
         'games.html',
@@ -88,6 +82,7 @@ def games():
         games=games,
         days_for_delete=config.get('DELETE_DAYS')
     )
+
 
 @ui_basis.route('/ranking', methods=['GET'])
 def ranking():

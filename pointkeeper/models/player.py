@@ -1,7 +1,5 @@
 from sqlalchemy import (
-    Column,
     Integer,
-    String,
     ForeignKey
 )
 from sqlalchemy.orm import relationship
@@ -9,6 +7,7 @@ from sqlalchemy.orm import relationship
 from pointkeeper.extensions import db
 
 from pointkeeper.models.table import Table
+
 
 class Player(db.Model):
     __tablename__ = "players"
@@ -20,7 +19,6 @@ class Player(db.Model):
     points_game_ration = db.Column(db.Float, default=0.0)
     table_id = db.Column(Integer, ForeignKey("tables.id"), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-
 
     table = relationship(Table)
 

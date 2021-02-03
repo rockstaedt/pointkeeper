@@ -1,15 +1,14 @@
 from sqlalchemy import (
-    Column,
     Integer,
     ForeignKey
 )
 from sqlalchemy.orm import relationship
-from typing import Dict
 
 from pointkeeper.extensions import db
 
 from pointkeeper.models.game import Game
 from pointkeeper.models.player import Player
+
 
 class Result(db.Model):
     __tablename__ = "results"

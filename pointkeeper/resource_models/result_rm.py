@@ -5,6 +5,7 @@ from pointkeeper.extensions import db
 
 from pointkeeper.models import Player, Game, Result
 
+
 def get_player_results(game_id: int):
     results = db.session.query(
         Result
@@ -20,6 +21,7 @@ def get_player_results(game_id: int):
         player_name_to_points[result.player.name] = result.points
     return player_name_to_points
 
+
 def get_total_points_all_ranked():
     results = db.session.query(
         Result.player_id,
@@ -29,15 +31,16 @@ def get_total_points_all_ranked():
     ).order_by(
         desc("total_points_sum")
     ).all()
-    player_id_to_rank_and_points= {}
+    player_id_to_rank_and_points = {}
     ranking = 1
     for result in results:
-            player_id_to_rank_and_points[result.player_id] = {
-                "total_points": result.total_points_sum,
-                "ranking": ranking
-            }
-            ranking += 1
+        player_id_to_rank_and_points[result.player_id] = {
+            "total_points": result.total_points_sum,
+            "ranking": ranking
+        }
+        ranking += 1
     return player_id_to_rank_and_points
+
 
 def get_total_points_player(player_id: int) -> int:
     results = db.session.query(
@@ -55,6 +58,7 @@ def get_total_points_player(player_id: int) -> int:
     else:
         return 0
 
+
 def get_total_batches_all() -> Dict:
     results = db.session.query(
         Result.player_id,
@@ -69,13 +73,14 @@ def get_total_batches_all() -> Dict:
         player_id_to_total_batches[result.player_id] = result.total_games_sum
     return player_id_to_total_batches
 
+
 def get_total_games_all() -> Dict:
     players = Player.query.all()
     player_id_to_total_games = {
         player.id: 0 for player in players
     }
     for player in players:
-        played_games =db.session.query(
+        played_games = db.session.query(
             Result.player_id
         ).filter(
             Result.player_id == player.id
@@ -84,7 +89,8 @@ def get_total_games_all() -> Dict:
             player_id_to_total_games[player.id] += 1
     return player_id_to_total_games
 
-def get_counter_placement_all(placement:int) -> Dict:
+
+def get_counter_placement_all(placement: int) -> Dict:
     players = Player.query.all()
     # init dictionary to store
     player_id_to_placement_counter = {player.id: 0 for player in players}

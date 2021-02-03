@@ -1,9 +1,7 @@
 from flask import (
     Blueprint,
-    render_template,
     request,
     flash,
-    url_for,
     redirect
 )
 from datetime import datetime
@@ -21,7 +19,7 @@ api_game = Blueprint('api_game', __name__, url_prefix='/api/v1/games/')
 @api_game.route('save_game', methods=['POST'])
 def save_game():
     # Safari on Mac does not support date input type. That is why, dates
-    # in fomat DD.MM.YYYY are caught.
+    # in format DD.MM.YYYY are caught.
     if '.' in request.form['date']:
         # input type: text
         game_date = datetime.strptime(
@@ -36,8 +34,8 @@ def save_game():
         )
     # create game and add it to database
     played_game = Game(
-        date = game_date,
-        played_matches = request.form['games']
+        date=game_date,
+        played_matches=request.form['games']
     )
     db.session.add(played_game)
     # get counter for players
@@ -49,9 +47,9 @@ def save_game():
         player_points = request.form[f'points_player_{i}']
         # create result for player
         result = Result(
-            points = player_points,
-            game = played_game,
-            player = player
+            points=player_points,
+            game=played_game,
+            player=player
         )
         db.session.add(result)
         # update players game statistics
@@ -64,7 +62,7 @@ def save_game():
 @api_game.route('update_game/<game_id>', methods=['POST'])
 def update_game(game_id):
     # get game from database
-    game_to_update= Game.query.get(game_id)
+    game_to_update = Game.query.get(game_id)
     # if date is not changed, input type is a text and there formatted
     # differently than in the date input field
     if '.' in request.form['date']:
@@ -90,8 +88,8 @@ def update_game(game_id):
         player_rm.update_game_statistics(player_id)
         # get result and update
         result = Result.query.filter_by(
-            game_id = game_id,
-            player_id = player_id
+            game_id=game_id,
+            player_id=player_id
         ).one()
         result.points = player_points
     db.session.commit()
@@ -106,7 +104,9 @@ def delete_game(game_id):
     game_to_delete = Game.query.get(game_id)
     db.session.delete(game_to_delete)
     # delete results
-    result_to_delete = Result.__table__.delete().where(Result.game_id == game_id)
+    result_to_delete = Result.__table__.delete().where(
+        Result.game_id == game_id
+    )
     db.session.execute(result_to_delete)
     # update game statistics
     players = Player.query.all()

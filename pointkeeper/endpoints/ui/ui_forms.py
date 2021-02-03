@@ -1,30 +1,22 @@
 from flask import (
     Blueprint,
-    render_template,
-    request,
-    flash,
-    url_for,
-    redirect
+    render_template
 )
-from datetime import datetime
-from sqlalchemy import select
 import os
-
-from pointkeeper.extensions import db
 
 from pointkeeper.models import Player, Game, Result
 
-from pointkeeper.resource_models import (
-    result_rm,
-    player_rm
-)
-
 ui_forms = Blueprint('ui_forms', __name__)
+
 
 @ui_forms.route('/add_game/players/<counter>', methods=['GET'])
 def add_game(counter):
     players = Player.query.all()
-    return render_template('add_game.html', players=players, counter=int(counter))
+    return render_template(
+        'add_game.html',
+        players=players,
+        counter=int(counter)
+    )
 
 
 @ui_forms.route('/update_game/<game_id>', methods=['GET'])

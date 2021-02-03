@@ -1,4 +1,3 @@
-from typing import Dict
 from sqlalchemy import func, extract, desc
 from collections import OrderedDict
 
@@ -6,7 +5,8 @@ from pointkeeper.extensions import db
 
 from pointkeeper.models import Player, Game, Result
 
-from pointkeeper.resource_models import result_rm, game_rm
+from pointkeeper.resource_models import result_rm
+
 
 def get_total_games_player(player_id) -> int:
     results = db.session.query(
@@ -24,6 +24,7 @@ def get_total_games_player(player_id) -> int:
     else:
         return 0
 
+
 def update_game_statistics(player_id):
     player = Player.query.get(player_id)
     player.total_points = result_rm.get_total_points_player(player.id)
@@ -37,6 +38,7 @@ def update_game_statistics(player_id):
         player.ranking = 999
         player.points_game_ration = 0
 
+
 def get_statistics_players() -> OrderedDict:
     results = db.session.query(Player).order_by(Player.ranking).all()
     result_dic = OrderedDict()
@@ -49,7 +51,8 @@ def get_statistics_players() -> OrderedDict:
         }
     return result_dic
 
-def get_statistics_players_by_year(year:int) -> OrderedDict:
+
+def get_statistics_players_by_year(year: int) -> OrderedDict:
     results = db.session.query(
         Result.player_id,
         func.sum(Result.points).label('total_points'),

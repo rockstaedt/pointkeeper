@@ -1,11 +1,7 @@
-from sqlalchemy import (
-    Column,
-    Integer,
-    DateTime
-)
 from datetime import datetime
 
 from pointkeeper.extensions import db
+
 
 class Game(db.Model):
     __tablename__ = "games"
