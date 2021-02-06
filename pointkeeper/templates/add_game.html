@@ -3,7 +3,7 @@
 {% block content %}
     {{ super() }}
     <div class="container mt-2">
-        <h4 class="mb-2 pb-2" style="border-bottom: #CCCCCC solid 1px;">Spiel hinzufügen</h6>
+        <h4 class="mb-2 pb-2" style="border-bottom: #CCCCCC solid 1px;">Spiel hinzufügen</h4>
         <form class="mb-4 mt-4" id="add_game_form" method="POST" action="{{url_for("api_game.save_game")}}" data-toggle="validator" role="form">
             <div class="form-group row">
                 <div class="form-group col-8">
@@ -12,7 +12,7 @@
                 </div>
                 <div class="form-group col-4">
                     <label for="games" class="col-form-label">Partien</label>
-                    <input type="number" class="form-control" id="games" name="games" required>
+                    <input type="number" class="form-control" id="games" name="games" pattern="[0-9]*" required>
                 </div>
             </div>
             <h6 class="mb-4 pb-2" style="border-bottom: #CCCCCC solid 1px;">Punkte</h6>
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="form-group col-4">
-                        <input type="number" class="form-control points" id="points_player_{{i}}" name="points_player_{{i}}" required>
+                        <input type="number" class="form-control points" id="points_player_{{i}}" name="points_player_{{i}}" pattern="[0-9]*" required>
                     </div>
                 </div>
             {% endfor %}
