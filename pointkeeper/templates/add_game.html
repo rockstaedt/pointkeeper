@@ -51,7 +51,7 @@
     <script src="{{url_for('static', filename='js/checks.js')}}"></script>
     <script>
         function add_player(){
-            counter_player = $('select').length + 1;
+            let counter_player = $('select').length + 1;
             window.location.href = "{{url_for('ui_forms.add_game', counter = counter_player)}}" + counter_player
         }
 
