@@ -40,6 +40,9 @@ def update_game_statistics(player_id):
 
 
 def get_statistics_players() -> OrderedDict:
+    players = Player.query.all()
+    for player in players:
+        update_game_statistics(player.id)
     results = db.session.query(Player).order_by(Player.ranking).all()
     result_dic = OrderedDict()
     for i, result in enumerate(results):
