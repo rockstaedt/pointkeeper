@@ -1,0 +1,30 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ dev-server ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Pull repo, checkout dev-server, rebuild docker image and start docker container
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ secrets.PATH }}
+          git pull
+          git checkout dev-server
+          echo ${{ secrets.PASSWORD }} | sudo -S docker stop pointkeeper
+          echo ${{ secrets.PASSWORD }} | sudo -S docker rm pointkeeper
+          echo ${{ secrets.PASSWORD }} | sudo -S docker build -t pointkeeper_image:latest ./
+          echo ${{ secrets.PASSWORD }} | sudo -S docker rmi $(echo ${{ secrets.PASSWORD }} | sudo -S docker images -f "dangling=true" -q)
+          echo ${{ secrets.PASSWORD }} | sudo -S docker run -d -p 80:80 --name pointkeeper pointkeeper_image:latest

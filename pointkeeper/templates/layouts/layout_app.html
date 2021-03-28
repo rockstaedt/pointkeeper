@@ -1,0 +1,44 @@
+{% extends "layouts/layout.html" %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-sm navbar-dark mt-2" style="background-color: black;">
+        <a class="navbar-brand" href="{{url_for("ui_basis.home")}}" style="color: #CCCCCC;">Pointkeeper</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation" style="border: 1px #CCCCCC solid;">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" id="test" href="{{url_for("ui_forms.add_game", counter = 4)}}" style="color: #CCCCCC;">Spiel hinzufügen</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" id="test" href="{{url_for("ui_basis.games")}}" style="color: #CCCCCC;">Spielliste</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url_for("ui_basis.ranking")}}" style="color: #CCCCCC;">Rangliste</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url_for("ui_basis.analyse")}}" style="color: #CCCCCC;">Analyse</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-2">
+        {% with messages = get_flashed_messages(with_categories = true) %}
+        {% if messages  %}
+            {% for category, message in messages  %}
+                <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}
