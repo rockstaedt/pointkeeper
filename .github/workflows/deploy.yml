@@ -1,8 +1,6 @@
 name: Deploy
 
-on:
-  push:
-    branches: [ dev-server ]
+on: [ main ]
 
 jobs:
   build:
@@ -12,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Pull repo, checkout dev-server, rebuild docker image and start docker container
+    - name: Pull repo, checkout main, rebuild docker image and start docker container
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -22,7 +20,7 @@ jobs:
         script: |
           cd ${{ secrets.PATH }}
           git pull
-          git checkout dev-server
+          git checkout main
           echo ${{ secrets.PASSWORD }} | sudo -S docker stop pointkeeper
           echo ${{ secrets.PASSWORD }} | sudo -S docker rm pointkeeper
           echo ${{ secrets.PASSWORD }} | sudo -S docker build -t pointkeeper_image:latest ./
