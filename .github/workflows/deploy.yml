@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Pull master, rebuild docker image and start docker
+    - name: Pull repo, checkout dev-server, rebuild docker image and start docker container
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -28,35 +28,3 @@ jobs:
           echo ${{ secrets.PASSWORD }} | sudo -S docker build -t pointkeeper_image:latest ./
           echo ${{ secrets.PASSWORD }} | sudo -S docker rmi $(echo ${{ secrets.PASSWORD }} | sudo -S docker images -f "dangling=true" -q)
           echo ${{ secrets.PASSWORD }} | sudo -S docker run -d -p 80:80 --name pointkeeper pointkeeper_image:latest
-
-#name: Deploy
-#
-## Controls when the action will run.
-#on:
-#  push:
-#    branches: [ dev-server ]
-#
-#jobs:
-#  build:
-#    runs-on: ubuntu-20.04
-#    steps:
-#      - name: executing remote ssh commands using password
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.SERVER_IP }}
-#          username: ${{ secrets.SERVER_USERNAME }}
-#          password: ${{ secrets.SERVER_USERPASSWORD }}
-#          port: ${{ secrets.SERVER_PORT }}
-#          script: whoami
-#          - uses: actions/checkout@v1
-#          - name: Push to server
-#            uses: appleboy/ssh-action@master
-#            with:
-#              host: ${{ secrets.SERVER_IP }}
-#              username: ${{ secrets.SERVER_USERNAME }}
-#              key: ${{ secrets.SERVER_SSHKEY }}
-#              script: |
-#                cd ${{ secrets.PROJECT_PATH }} && \
-#                git pull && git checkout dev-server && \
-#                echo ${{ secrets.SERVER_USERPASSWORD }} | sudo -S docker build -t pointkeeper_image ./ &&
-#                echo ${{ secrets.SERVER_USERPASSWORD }} | sudo docker run -d -p 80:80 pointkeeper_image
