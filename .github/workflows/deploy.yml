@@ -21,7 +21,7 @@ jobs:
         KEY: ${{ secrets.SSHKEY }}
         script: |
           cd ${{ secrets.PATH }}
-          git pull
+          git pull origin
           git checkout main
           echo ${{ secrets.PASSWORD }} | sudo -S docker stop pointkeeper
           echo ${{ secrets.PASSWORD }} | sudo -S docker rm pointkeeper
