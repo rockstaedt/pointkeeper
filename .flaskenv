@@ -1,3 +1,0 @@
-FLASK_ENV=production
-FLASK_APP=doppelkopf
-FLASK_DEBUG=1
