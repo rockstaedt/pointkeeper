@@ -47,6 +47,14 @@
     <!-- Zoom Plugin für chart js Awesome -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
 
+    <script>
+        Chart.defaults.global.defaultFontColor = '#cccccc'
+
+        Chart.Legend.prototype.afterFit = function() {
+            this.height = this.height + 20;
+        };
+    </script>
+
     {% block scripts %}
     {% endblock scripts%}
 </body>
