@@ -2,26 +2,6 @@ let rangliste_ctx = $('#rangliste_chart')[0].getContext('2d');
 
 let datasets_rangliste = [];
 
-let eric_img = new Image(40,40);
-let lucas_img = new Image(40,40);
-let marco_img = new Image(40,40);
-let peer_img = new Image(40,40);
-let nils_img = new Image(40,40);
-
-eric_img.src ='static/img/Eric.png';
-lucas_img.src ='static/img/Lucas.png';
-marco_img.src ='static/img/Marco.png';
-peer_img.src ='static/img/Peer.png';
-nils_img.src ='static/img/Nils.png';
-
-let player_to_pic = {
-    'Eric': eric_img,
-    'Lucas': lucas_img,
-    'Nils': nils_img,
-    'Marco': marco_img,
-    'Peer': peer_img
-};
-
 // Fetch data for chart.
 let getData_rangliste = $.get("/api/v1/get_data_rangliste");
 // Wait until fetching is done.
