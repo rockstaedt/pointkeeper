@@ -8,7 +8,7 @@ from pointkeeper.models import Player, Game, Result
 api_analysis = Blueprint('api_analysis', __name__)
 
 
-@api_analysis.route('/api/v1/get_rangliste_chart', methods=['GET'])
+@api_analysis.route('/api/v1/get_data_rangliste', methods=['GET'])
 def rangliste_chart():
     result_dict = {
         'labels': [],
@@ -18,8 +18,8 @@ def rangliste_chart():
     current_total_points = {}
     games = Game.query.order_by(asc(Game.date), asc(Game.id)).all()
     players = Player.query.all()
-    for game in games:
-        result_dict['labels'].append(game.date.isoformat())
+    for i, _ in enumerate(games):
+        result_dict['labels'].append(f'Spiel {i+1}')
     for player in players:
         datasets_dict[player.name] = {
             'data': [],
@@ -54,27 +54,26 @@ def rangliste_chart():
             datasets_dict[player[0]]['data'].append(ranking)
             ranking += 1
             if i != len(games) - 1:
-                datasets_dict[player[0]]['pointRadius'].append(5)
-                datasets_dict[player[0]]['pointHitRadius'].append(5)
+                datasets_dict[player[0]]['pointRadius'].append(2)
+                datasets_dict[player[0]]['pointHitRadius'].append(10)
                 datasets_dict[player[0]]['pointStyle'].append('circle')
         if i == 0:
             # In the first game, one player does not have points -> 5th place
             for player in players:
                 if len(datasets_dict[player.name]['data']) == 0:
                     datasets_dict[player.name]['data'].append(5)
-                    datasets_dict[player.name]['pointRadius'].append(5)
-                    datasets_dict[player.name]['pointHitRadius'].append(5)
+                    datasets_dict[player.name]['pointRadius'].append(2)
+                    datasets_dict[player.name]['pointHitRadius'].append(10)
                     datasets_dict[player.name]['pointStyle'].append('circle')
+
     for key, value in datasets_dict.items():
-        result_dict['datasets'].append(
-            {
+        result_dict['datasets'].append({
                 'label': key,
                 'data': value['data'],
                 'pointRadius': value['pointRadius'],
                 'pointHitRadius': value['pointHitRadius'],
                 'pointStyle': value['pointStyle']
-            }
-        )
+        })
     return result_dict
 
 
