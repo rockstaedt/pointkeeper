@@ -77,7 +77,7 @@ def rangliste_chart():
     return result_dict
 
 
-@api_analysis.route('/api/v1/get_punkte_chart', methods=['GET'])
+@api_analysis.route('/api/v1/get_data_punktehistorie', methods=['GET'])
 def punkte_chart():
     result_dict = {}
     datasets_dict = {}
@@ -86,10 +86,9 @@ def punkte_chart():
     current_total_points = {}
     games = Game.query.order_by(asc(Game.date), asc(Game.id)).all()
     players = Player.query.all()
-    # create a list of labels which contains the games dates and store it
-    # in a dictionary
-    for game in games:
-        result_dict['labels'].append(game.date.isoformat())
+    # create a list of labels which contains number of the game.
+    for i, _ in enumerate(games):
+        result_dict['labels'].append(f'Spiel {i+1}')
     for player in players:
         # initiate dictionary for players to get the values for chart js
         datasets_dict[player.name] = {
@@ -116,11 +115,9 @@ def punkte_chart():
             current_total_points[result.name] += result.points
         for player, points in current_total_points.items():
             datasets_dict[player]['data'].append(points)
-            # add properties for chart js without picture
-            if i != len(games) - 1:
-                datasets_dict[player]['pointRadius'].append(5)
-                datasets_dict[player]['pointHitRadius'].append(5)
-                datasets_dict[player]['pointStyle'].append('circle')
+            datasets_dict[player]['pointRadius'].append(2)
+            datasets_dict[player]['pointHitRadius'].append(10)
+            datasets_dict[player]['pointStyle'].append('circle')
     for key, value in datasets_dict.items():
         result_dict['datasets'].append(
             {
