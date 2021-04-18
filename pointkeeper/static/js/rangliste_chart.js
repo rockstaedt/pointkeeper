@@ -2,6 +2,10 @@ let rangliste_ctx = $('#rangliste_chart')[0].getContext('2d');
 
 let datasets_rangliste = [];
 
+function get_min_x_label(labels) {
+  return labels[labels.length -10];
+}
+
 // Fetch data for chart.
 let getData_rangliste = $.get("/api/v1/get_data_rangliste");
 // Wait until fetching is done.
@@ -71,8 +75,7 @@ getData_rangliste.done(function(data) {
                 xAxes: [
                     {
                         ticks: {
-                            // TODO: Make the minimum of the x axis dynamic. So that only 6 games are shown.
-                            min: 'Spiel 20',
+                            min: get_min_x_label(data.labels),
                             padding: 20,
                         },
                         gridLines: {
