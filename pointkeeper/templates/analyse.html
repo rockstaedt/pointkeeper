@@ -8,6 +8,10 @@
         <div>
             <canvas id="rangliste_chart" width="100%" height="300px"></canvas>
         </div>
+        <h5 class="mb-2 mt-4">Punktehistorie</h5>
+        <div>
+            <canvas id="punkte_chart" width="100%" height="300px"></canvas>
+        </div>
     </div>
 {% endblock content %}
 
@@ -32,6 +36,14 @@
             'Nils': nils_img,
             'Marco': marco_img,
             'Peer': peer_img
+        };
+
+        let player_to_color = {
+            'Eric': '#43DCA3',
+            'Lucas': '#dc9743',
+            'Nils': '#dc4367',
+            'Marco': '#397bf1',
+            'Peer': '#a643dc'
         }
     </script>
 
