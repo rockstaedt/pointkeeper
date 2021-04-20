@@ -104,6 +104,4 @@ def ranking():
 
 @ui_basis.route('/analyse', methods=['GET'])
 def analyse():
-    coms = Community.query.all()
-    print(coms)
     return render_template('analyse.html')
