@@ -3,7 +3,7 @@ from flask.cli import with_appcontext
 
 from .extensions import db
 from pointkeeper.models import Player
-from pointkeeper.models import Table
+from pointkeeper.models import Community
 
 
 @click.command(name='create_tables')
@@ -43,7 +43,7 @@ def create_tables():
     db.session.add(nils)
     db.session.add(peer)
 
-    table = Table(
+    table = Community(
         name="Cooking Like OG",
         pin="1234"
     )

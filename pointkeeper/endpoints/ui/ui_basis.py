@@ -7,7 +7,7 @@ import json
 
 from pointkeeper.extensions import db
 
-from pointkeeper.models import Player, Game
+from pointkeeper.models import Player, Game, Community
 
 from pointkeeper.resource_models import (
     result_rm,
@@ -104,4 +104,6 @@ def ranking():
 
 @ui_basis.route('/analyse', methods=['GET'])
 def analyse():
+    coms = Community.query.all()
+    print(coms)
     return render_template('analyse.html')

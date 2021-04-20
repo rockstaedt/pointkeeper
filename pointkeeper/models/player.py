@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 
 from pointkeeper.extensions import db
 
-from pointkeeper.models.table import Table
+from pointkeeper.models.community import Community
 
 
 class Player(db.Model):
@@ -17,10 +17,14 @@ class Player(db.Model):
     total_games = db.Column(db.Integer, default=0)
     total_points = db.Column(db.Integer, default=0)
     points_game_ration = db.Column(db.Float, default=0.0)
-    table_id = db.Column(Integer, ForeignKey("tables.id"), nullable=False)
+    community_id = db.Column(
+        Integer,
+        ForeignKey("communities.id"),
+        nullable=False
+    )
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
 
-    table = relationship(Table)
+    table = relationship(Community)
 
     def __repr__(self):
         return f'Player(ID: {self.id}, Name: {self.name})'
