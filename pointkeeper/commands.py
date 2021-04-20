@@ -13,27 +13,27 @@ def create_tables():
 
     eric = Player(
         name="Eric",
-        table_id=1,
+        community_id=1,
         image_file='Eric.png'
     )
     lucas = Player(
         name="Lucas",
-        table_id=1,
+        community_id=1,
         image_file='Lucas.png'
     )
     marco = Player(
         name="Marco",
-        table_id=1,
+        community_id=1,
         image_file='Marco.png'
     )
     nils = Player(
         name="Nils",
-        table_id=1,
+        community_id=1,
         image_file='Nils.png'
     )
     peer = Player(
         name="Peer",
-        table_id=1,
+        community_id=1,
         image_file='Peer.png'
     )
 
