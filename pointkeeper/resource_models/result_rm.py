@@ -1,4 +1,4 @@
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, extract
 from typing import Dict
 
 from pointkeeper.extensions import db
@@ -90,26 +90,47 @@ def get_total_games_all() -> Dict:
     return player_id_to_total_games
 
 
-def get_counter_placement_all(placement: int) -> Dict:
+def get_counter_placement_all(placement: int, year: int = None) -> Dict:
+    """
+    This function returns a dictionary of player ids, and the corresponding
+    number how many times the player reached the passed placement. When the
+    parameter year is specified, the number is determined for this year.
+
+    :param placement: Specifies the ranking.
+    :param year: Specifies the considered year. Defaults to None.
+    :return: Dictionaries of player ids, and the number of the placement.
+    """
     players = Player.query.all()
-    # init dictionary to store
+
+    # Init dictionary to store the counter.
     player_id_to_placement_counter = {player.id: 0 for player in players}
-    games = Game.query.all()
+
+    if year:
+        games = Game.query.filter(extract('year', Game.date) == year)
+    else:
+        games = Game.query.all()
+
     for game in games:
         results = Result.query.filter(
             Result.game_id == game.id
         ).order_by(
             desc(Result.points)
         ).all()
+
         if placement <= len(results):
             if placement != -1:
+                # Adapt placement to support 0 based array.
                 index = placement - 1
             else:
+                # Use python slicing to access the last place.
                 index = placement
             player_id_to_placement_counter[results[index].player_id] += 1
         else:
+            # Raise an error when a placement is passed that cannot be applied
+            # to the current game, e.g. placement 5 but only 4 players.
             raise ValueError(
                 f'Placement {placement} can not be determined for '
                 + f'{len(results)} results for game {game.id}.'
             )
+
     return player_id_to_placement_counter
