@@ -11,7 +11,8 @@ from pointkeeper.models import Player, Game, Community
 
 from pointkeeper.resource_models import (
     result_rm,
-    player_rm
+    player_rm,
+    game_rm
 )
 
 with open('config.json') as config_file:
@@ -86,11 +87,7 @@ def games():
 
 @ui_basis.route('/ranking', methods=['GET'])
 def ranking():
-    result = db.session.query(
-        func.min(extract('year', Game.date)).label('year_min'),
-        func.max(extract('year', Game.date)).label('year_max')
-    ).one()
-    years = list(range(int(result.year_max), int(result.year_min)-1, -1))
+    years = game_rm.get_list_played_years()
     player_statistics = {year: {} for year in years}
     player_statistics['ewig'] = player_rm.get_statistics_players()
     for year in years:
