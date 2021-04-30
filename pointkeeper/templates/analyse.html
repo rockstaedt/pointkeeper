@@ -8,9 +8,31 @@
         <div>
             <canvas id="rangliste_chart" width="100%" height="300px"></canvas>
         </div>
-        <h5 class="mb-2 mt-4">Punktehistorie</h5>
+        <h5 class="mb-2 mt-5">Punktehistorie</h5>
         <div>
             <canvas id="punkte_chart" width="100%" height="300px"></canvas>
+        </div>
+        <h5 class="mb-2 mt-5">Bierliste</h5>
+        <div class="d-flex justify-content-between mb-1">
+            <div class="d-flex align-items-center">
+                <p style="margin-bottom: 0">
+                    Summe: <span id="total_sum" ></span>
+                </p>
+            </div>
+            <div>
+                <select class="custom-select-sm" name="year_selector" id="year_selector" onchange="update_chart()">
+                    {% for year in years %}
+                        {% if loop.index0 == 0 %}
+                            <option selected>{{ year }}</option>
+                        {% else %}
+                            <option>{{ year }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div>
+            <canvas id="loser_chart" width="100%" height="300px"></canvas>
         </div>
     </div>
 {% endblock content %}
@@ -44,10 +66,16 @@
             'Nils': '#dc4367',
             'Marco': '#397bf1',
             'Peer': '#a643dc'
+        };
+
+        function update_chart(){
+            let year = $("#year_selector option:selected").text();
+            create_loser_chart(year)
         }
     </script>
 
     <script src="{{url_for('static', filename='js/rangliste_chart.js')}}"></script>
     <script src="{{url_for('static', filename='js/punkte_chart.js')}}"></script>
+    <script src="{{url_for('static', filename='js/loser_chart.js')}}"></script>
 
 {% endblock scripts %}
