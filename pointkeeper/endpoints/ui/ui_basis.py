@@ -101,4 +101,5 @@ def ranking():
 
 @ui_basis.route('/analyse', methods=['GET'])
 def analyse():
-    return render_template('analyse.html')
+    years = game_rm.get_list_played_years(desc=False)
+    return render_template('analyse.html', years=years)
