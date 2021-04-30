@@ -4,6 +4,7 @@ from sqlalchemy import asc
 from pointkeeper.extensions import db
 
 from pointkeeper.models import Player, Game, Result
+from pointkeeper.resource_models import result_rm
 
 api_analysis = Blueprint('api_analysis', __name__)
 
@@ -129,3 +130,34 @@ def punkte_chart():
             }
         )
     return result_dict
+
+
+@api_analysis.route('/api/v1/get_data_loser/<year>', methods=['GET'])
+def loser_chart(year):
+    """
+    This function returns a dictionary containing all relevant information
+    to create a bar chart with chart.js to show the downsides of the players.
+    Hereby, the downside is shown for a specific year.
+
+    :param year: Specifies the considered year.
+    :return: A dictionary to set up a bar chart with chart.js
+    """
+    player_id_to_defeats = result_rm.get_counter_placement_all(
+        placement=-1,
+        year=year
+    )
+
+    data = {
+        'labels': [],
+        'values': []
+    }
+    players = Player.query.order_by(Player.name).all()
+    total_sum = 0
+    for i, player in enumerate(players):
+        data['labels'].append(player.name)
+        data['values'].append(player_id_to_defeats[player.id])
+        total_sum += player_id_to_defeats[player.id]
+
+    data['total_sum'] = total_sum
+
+    return data
