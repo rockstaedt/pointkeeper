@@ -11,7 +11,7 @@
         <div class="row justify-content-center align-items-center mt-1">
         {% for player in players %}
             <div class="col-4 text-center">
-                <img class="user-pic mb-3" src="static/img/{{player.name}}.png" alt="{{player.name}}">
+                <img class="user-pic mb-3" src="static/img/{{player.image_file -}}" alt="{{player.name}}">
             </div>
         {% endfor %}
         </div>
