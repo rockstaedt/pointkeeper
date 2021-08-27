@@ -32,7 +32,7 @@ def update_game_statistics(player_id):
     if player.total_games != 0:
         player.points_game_ration = player.total_points/player.total_games
     player_id_to_rank_and_points = result_rm.get_total_points_all_ranked()
-    if player.total_points != 0 or player.total_games != 0:
+    if player_id in player_id_to_rank_and_points:
         player.ranking = player_id_to_rank_and_points[player.id]["ranking"]
     else:
         player.ranking = 999
