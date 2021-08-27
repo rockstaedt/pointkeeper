@@ -45,19 +45,22 @@
         let marco_img = new Image(40,40);
         let peer_img = new Image(40,40);
         let nils_img = new Image(40,40);
+        let felix_img = new Image(40,40);
 
         eric_img.src ='static/img/Eric.png';
         lucas_img.src ='static/img/Lucas.png';
         marco_img.src ='static/img/Marco.png';
         peer_img.src ='static/img/Peer.png';
         nils_img.src ='static/img/Nils.png';
+        felix_img.src = 'static/img/default.png'
 
         let player_to_pic = {
             'Eric': eric_img,
             'Lucas': lucas_img,
             'Nils': nils_img,
             'Marco': marco_img,
-            'Peer': peer_img
+            'Peer': peer_img,
+            'Felix': felix_img
         };
 
         let player_to_color = {
@@ -65,7 +68,8 @@
             'Lucas': '#dc9743',
             'Nils': '#dc4367',
             'Marco': '#397bf1',
-            'Peer': '#a643dc'
+            'Peer': '#a643dc',
+            'Felix': '#78e233'
         };
 
         function update_chart(){
