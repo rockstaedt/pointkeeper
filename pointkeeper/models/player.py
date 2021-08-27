@@ -23,6 +23,7 @@ class Player(db.Model):
         nullable=False
     )
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    start_date = db.Column(db.Date)
 
     table = relationship(Community)
 
