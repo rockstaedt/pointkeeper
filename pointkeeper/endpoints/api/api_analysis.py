@@ -108,10 +108,10 @@ def punkte_chart():
             'pointHitRadius': [],
             'pointStyle': []
         }
-        current_total_points[player.name] = 0
     for i, game in enumerate(games):
         results = db.session.query(
             Player.name,
+            Player.start_date,
             Game.id,
             Game.date,
             Result.points
@@ -122,12 +122,18 @@ def punkte_chart():
             Game.id == game.id
         ).all()
         for result in results:
-            current_total_points[result.name] += result.points
+            if result.date >= result.start_date:
+                if result.name not in current_total_points:
+                    current_total_points[result.name] = 0
+                current_total_points[result.name] += result.points
         for player, points in current_total_points.items():
             datasets_dict[player]['data'].append(points)
             datasets_dict[player]['pointRadius'].append(2)
             datasets_dict[player]['pointHitRadius'].append(10)
             datasets_dict[player]['pointStyle'].append('circle')
+        for player in players:
+            if player.name not in current_total_points:
+                datasets_dict[player.name]['data'].append(None)
     for key, value in datasets_dict.items():
         result_dict['datasets'].append(
             {
