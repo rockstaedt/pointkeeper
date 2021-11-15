@@ -54,6 +54,7 @@ def rangliste_chart():
         for player in ranked_players:
             datasets_dict[player[0]]['data'].append(ranking)
             ranking += 1
+            # Styles for last entry are set in JS.
             if i != len(games) - 1:
                 datasets_dict[player[0]]['pointRadius'].append(2)
                 datasets_dict[player[0]]['pointHitRadius'].append(10)
