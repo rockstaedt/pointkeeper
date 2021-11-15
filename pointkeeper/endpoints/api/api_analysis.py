@@ -19,9 +19,11 @@ def rangliste_chart():
     current_total_points = {}
     games = Game.query.order_by(asc(Game.date), asc(Game.id)).all()
     players = Player.query.all()
+    player_names = []
     for i, _ in enumerate(games):
         result_dict['labels'].append(f'Spiel {i+1}')
     for player in players:
+        player_names.append(player.name)
         datasets_dict[player.name] = {
             'data': [],
             'pointRadius': [],
@@ -29,10 +31,10 @@ def rangliste_chart():
             'pointHitRadius': [],
             'pointStyle': []
         }
-        current_total_points[player.name] = 0
     for i, game in enumerate(games):
         results = db.session.query(
             Player.name,
+            Player.start_date,
             Game.id,
             Game.date,
             Result.points
@@ -44,14 +46,19 @@ def rangliste_chart():
         ).all()
         # update total points to get ranking
         for result in results:
-            current_total_points[result.name] += result.points
+            if result.date >= result.start_date:
+                if result.name not in current_total_points:
+                    current_total_points[result.name] = 0
+                current_total_points[result.name] += result.points
         ranked_players = sorted(
             current_total_points.items(),
             key=lambda item: item[1],
             reverse=True
         )
         ranking = 1
+        ranked_player_names = []
         for player in ranked_players:
+            ranked_player_names.append(player[0])
             datasets_dict[player[0]]['data'].append(ranking)
             ranking += 1
             # Styles for last entry are set in JS.
@@ -59,14 +66,15 @@ def rangliste_chart():
                 datasets_dict[player[0]]['pointRadius'].append(2)
                 datasets_dict[player[0]]['pointHitRadius'].append(10)
                 datasets_dict[player[0]]['pointStyle'].append('circle')
-        if i == 0:
-            # In the first game, one player does not have points -> 5th place
-            for player in players:
-                if len(datasets_dict[player.name]['data']) == 0:
-                    datasets_dict[player.name]['data'].append(5)
-                    datasets_dict[player.name]['pointRadius'].append(2)
-                    datasets_dict[player.name]['pointHitRadius'].append(10)
-                    datasets_dict[player.name]['pointStyle'].append('circle')
+
+        not_ranked_player_names = list(
+            set(ranked_player_names).symmetric_difference(set(player_names))
+        )
+        for player_name in not_ranked_player_names:
+            datasets_dict[player_name]['data'].append(-1)
+            datasets_dict[player_name]['pointRadius'].append(2)
+            datasets_dict[player_name]['pointHitRadius'].append(10)
+            datasets_dict[player_name]['pointStyle'].append('circle')
 
     for key, value in datasets_dict.items():
         result_dict['datasets'].append({
