@@ -59,7 +59,7 @@ getData_rangliste.done(function(data) {
                         ticks : {
                             reverse : true,
                             padding: 20,
-                            max: 5,
+                            max: 6,
                             min: 1,
                             callback: function(value, index, values) {
                                 if (Math.floor(value) === value) {
