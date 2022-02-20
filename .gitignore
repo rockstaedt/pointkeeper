@@ -137,6 +137,3 @@ database.sqlite
 
 # Config files
 config.json
-
-# Docker start script
-docker_start.sh

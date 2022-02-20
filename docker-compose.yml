@@ -1,0 +1,27 @@
+version: "3.6"
+services:
+  pk-postgres:
+    image: postgres:14.2
+    container_name: pk-postgres
+    environment:
+      - POSTGRES_DB=pk_db
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./:/app
+      - ./.docker/postgres/postgres.conf:/etc/postgresql/postgresql.conf
+    networks:
+      - pk-network
+  pk-flask:
+    container_name: pk-flask
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8300:5000"
+    networks:
+      - pk-network
+networks:
+  pk-network:
